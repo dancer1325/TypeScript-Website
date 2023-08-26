@@ -5,7 +5,7 @@
 // available for anyone which means you can consistently
 // rely on their availability
 
-// Partial<Type>
+//                            --    Partial<Type>    --
 
 // Takes a type and converts all of its properties
 // to optional ones.
@@ -18,15 +18,37 @@ interface Sticker {
   submitter: undefined | string;
 }
 
+class StickerClass implements Sticker {
+  // Required to pass ALL properties
+  constructor(public id: number, public name: string,
+              public createdAt: string, public updatedAt:string,
+              public submitter: undefined | string) {
+  }
+}
+
+const stickerInstance = new StickerClass(1, "Alfredo",
+  "2023-08-26", "2023-08-26",
+  "");
+
 type StickerUpdateParam = Partial<Sticker>;
 
-// Readonly<Type>
+class StickerPartialClass implements StickerUpdateParam {
+  // Now, all properties are optional -> constructor is even optional to add
+  constructor(public id: number) {
+  }
+}
+
+const stickerPartialInstance = new StickerPartialClass(2);
+
+
+//                            --    Readonly<Type>    --
 
 // Takes an object and makes its properties read-only.
 
 type StickerFromAPI = Readonly<Sticker>;
 
-// Record<KeysFrom, Type>
+
+//                            --    Record<KeysFrom, Type>    --
 
 // Creates a type which uses the list of properties from
 // KeysFrom and gives them the value of Type.
@@ -48,7 +70,11 @@ const navigationInfo: Record<NavigationPages, PageInfo> = {
   stickers: { title: "Stickers", url: "/stickers/all" },
 };
 
-// Pick<Type, Keys>
+const home = navigationInfo.home;
+
+console.log("home.url " + home.url + " home.axTitle " + home.axTitle + " home.title " + home.title);
+
+//                            --    Pick<Type, Keys>    --
 
 // Creates a type by picking the set of properties Keys
 // from Type. Essentially an allow-list for extracting type
@@ -56,7 +82,9 @@ const navigationInfo: Record<NavigationPages, PageInfo> = {
 
 type StickerSortPreview = Pick<Sticker, "name" | "updatedAt">;
 
-// Omit<Type, Keys>
+
+//                            --    Omit<Type, Keys>    --
+
 
 // Creates a type by removing the set of properties Keys
 // from Type. Essentially a block-list for extracting type
