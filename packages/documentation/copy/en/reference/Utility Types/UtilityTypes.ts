@@ -1,7 +1,7 @@
 
 
 
-//                            --    PARTIAL<Type>    --
+//                            --    Partial<Type>    --
 
 interface Todo {
   title: string;
@@ -23,7 +23,7 @@ const todo2 = updateTodo(todo1, {
 });
 
 
-//                            --    RECORD<Type>    --
+//                            --    Record<Type>    --
 
 interface CatInfo {
   age: number;
