@@ -52,7 +52,7 @@ enum DirectionInitializedSeveralMixingOrder {
 // If number is repeated -> last one will be taken
 console.log("DirectionInitializedSeveralMixingOrder[4] " + DirectionInitializedSeveralMixingOrder[4]);
 
-// Initialize based on a function
+// Compute initialize === based on a function
 enum E {
   A = getSomeValue(),
   B=2,
@@ -76,3 +76,25 @@ function respond(recipient: string, message: UserResponse): void {
 
 respond("Princess Caroline", UserResponse.Yes);
 
+
+//                            --    string enums   --
+
+enum StringDirection {
+  Up = "UP",
+  // Must be initialized
+  //Down,
+  Down = "DOWN",
+  // Can not be computed initialized
+  //Left = getLeftDirection(),
+  Left = "LEFT",
+  Right = "RIGHT",
+}
+function getLeftDirection() {return "LEFT"};
+
+// Initializing with another string enum member   --> string type (string or number) is inherited
+enum Action {
+  Move = StringDirection.Up,
+  Stop = StringDirection.Down
+}
+console.log("StringDirection.Up " + StringDirection.Up);
+console.log("Action.Move " + Action.Move);
