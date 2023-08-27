@@ -191,4 +191,56 @@ console.log("withBinaryOperators.BitwiseOr " + withBinaryOperators.BitwiseOr);
 console.log("withBinaryOperators.BitwiseXor " + withBinaryOperators.BitwiseXor);
 
 
+//                            --    Union enums & enum member types    --
+// 1. Literal enum members
+// 1.1 Constant enum member non-initialized
+enum noInitialized {
+  Circle,
+  Square,
+}
+// 1.2 Constant enum member with values initialized as string literal
+enum initializedAsStringLiteral{
+  First = "first",
+  Second = "second"
+}
+// 1.3 Constant enum member with values initialized as numeric literal
+enum initializedAsNumericLiteral{
+  First = 4,
+  Second = 10
+}
+// 1.4 Constant enum member with unary minus (-) applied to a numeric literal
+enum initializedApplyingUnaryMinusNumericLiteral{
+  First = -4,
+  Second = -10
+}
+// 1.5 If all enum’s members have literal enum values → enum’s members become types
+// In the next enum, all are literal enum members (1.1 case)
+enum ShapeKind {
+  Circle,
+  Square,
+}
+interface Circle {
+  // ShapeKind.Circle     can be used as type
+  kind: ShapeKind.Circle;
+  radius: number;
+}
+interface Square {
+  // ShapeKind.Square     can be used as type
+  kind: ShapeKind.Square;
+  sideLength: number;
+}
+let circle: Circle = {
+  // Impossible to assign another type
+  //kind: ShapeKind.Square
+  kind: ShapeKind.Circle,
+  radius: 10
+}
+// 1.6 If all enum’s members have literal enum values → enum’s members (as types) become a union
+function f(x:ShapeKind) {
+  // Total set is ShapeKind.Circle U ShapeKind.Square -> x can be or Circle or Square ->
+  // next | would throw an error
+  // if (x!== ShapeKind.Circle || x!== ShapeKind.Square) {
+  //   console.log("x " + x);
+  // }
+}
 
