@@ -103,3 +103,13 @@ enum Action {
 }
 console.log("StringDirection.Up " + StringDirection.Up);
 console.log("Action.Move " + Action.Move);
+
+
+//                            --    heterogeneus enums   --
+
+enum BooleanLikeHeterogeneousEnum {
+  No = 0,
+  Yes = "YES",
+}
+console.log("BooleanLikeHeterogeneousEnum.No " + BooleanLikeHeterogeneousEnum.No);
+console.log("BooleanLikeHeterogeneousEnum.Yes " + BooleanLikeHeterogeneousEnum.Yes);
