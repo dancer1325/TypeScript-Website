@@ -58,6 +58,7 @@ console.log("User Logged in: ", userID.toUpperCase());
 
 // Only in strict mode the above will fail ^
 
+//                            --    non-null assertion operator (!)   --
 // There are ways to tell TypeScript you know more, such as
 // a type assertion or via a non-null assertion operator (!)
 
@@ -70,6 +71,7 @@ if (userID) {
   console.log(userID);
 }
 
+//                            --       --
 // Optional Properties
 
 // Void
