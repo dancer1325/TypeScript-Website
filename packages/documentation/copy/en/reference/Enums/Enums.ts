@@ -75,6 +75,11 @@ function respond(recipient: string, message: UserResponse): void {
 }
 
 respond("Princess Caroline", UserResponse.Yes);
+// Access to enum's value
+console.log("UserResponse.No " + UserResponse.No );
+console.log("UserResponse[\"No\"] " + UserResponse["No"] );
+// Access to enum's key
+console.log("UserResponse[0] " + UserResponse[0] );
 
 
 //                            --    string enums   --
