@@ -244,3 +244,17 @@ function f(x:ShapeKind) {
   // }
 }
 
+
+//                            --    Enums at runtime    --
+// For the next enum, all members are considered as type
+enum enumAtRuntime {
+  U,
+  V,
+  W
+}
+function functionForTheEnum(obj: { U: number }) {
+  return obj.U;
+}
+// Since all members are considered as type, and it contains U -> the enum can be passed
+// around a function
+functionForTheEnum(enumAtRuntime);
