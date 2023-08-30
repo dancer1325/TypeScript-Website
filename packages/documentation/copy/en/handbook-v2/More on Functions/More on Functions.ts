@@ -1,6 +1,6 @@
 
 
-//                            --    unknown    --
+//                                       --    unknown    --
 // unknown === any, but safer, since it's not all allowed
 // 1. as function's argument, accepts any value, but not any
 function f1(a: any) {
@@ -36,3 +36,19 @@ function safeParse(s: string): unknown {
 const obj = safeParse('{"someRandomString":"a"}');
 console.log("obj is " + obj + " and it's typeof obj " + typeof obj);
 
+
+//                                          --    never    --
+// Next function never returns a type, since it always throws an error
+function fail(msg: string): never {
+  throw new Error(msg);
+}
+// If some part of the code is never reached -> some variable there has never type
+function fn(x: string | number) {
+  if (typeof x === "string") {
+    console.log("x with typeof " + typeof x);
+  } else if (typeof x === "number") {
+    console.log("x with typeof " + typeof x);
+  } else {
+    x; // has type 'never'!, because it's never reached!!!
+  }
+}
