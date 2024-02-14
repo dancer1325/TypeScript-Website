@@ -1,9 +1,4 @@
-// There are two main tools to declare the shape of an
-// object: interfaces and type aliases.
-//
-// They are very similar, and for the most common cases
-// act the same.
-
+//  1. Pretty similar to create objects
 type BirdType = {
   wings: 2;
 };
@@ -15,18 +10,22 @@ interface BirdInterface {
 const bird1: BirdType = { wings: 2 };
 const bird2: BirdInterface = { wings: 2 };
 
-// Because TypeScript is a structural type system,
-// it's possible to intermix their use too.
 
+
+// 2. Possible to intermix their use
 const bird3: BirdInterface = bird1;
 
-// They both support extending other interfaces and types.
-// Type aliases do this via intersection types, while
-// interfaces have a keyword.
 
+
+// 3. Support being extended
+// 3.1 type       via     intersection type -- & --
 type Owl = { nocturnal: true } & BirdType;
-type Robin = { nocturnal: false } & BirdInterface;
+type Robin = { nocturnal: false } & BirdInterface;      // second member can be an interface, but the important is the 1@
 
+// if some type’s properties have default values & you want to create an object → REDUNDANT to specify it!!!
+let owl: Owl = { wings: 2, nocturnal: true };
+
+// 3.2 interface  via     extends
 interface Peacock extends BirdType {
   colourful: true;
   flies: false;
@@ -36,48 +35,33 @@ interface Chicken extends BirdInterface {
   flies: false;
 }
 
-let owl: Owl = { wings: 2, nocturnal: true };
-let chicken: Chicken = { wings: 2, colourful: false, flies: false };
+// although some interface’s properties have default values & you want to create an object → NEED to specify it!!!
+//let chicken: Chicken = { colourful: false, flies: false }; // uncomment this line to check
+let chicken: Chicken = { wings:2, colourful: false, flies: false };
 
-// That said, we recommend you use interfaces over type
-// aliases. Specifically, because you will get better error
-// messages. If you hover over the following errors, you can
-// see how TypeScript can provide terser and more focused
-// messages when working with interfaces like Chicken.
 
-owl = chicken;
-chicken = owl;
 
-// One major difference between type aliases vs interfaces
-// are that interfaces are open and type aliases are closed.
-// This means you can extend an interface by declaring it
-// a second time.
+// 4. Typescript gives better error messages for interface
+//    -> recommend it's use
+owl = chicken;      // hove over the error message
+chicken = owl;      // hove over the error message
 
+
+
+// 5. type` are closed and `interface` are open
+// 5.1 interface
 interface Kitten {
   purrs: boolean;
 }
-
-interface Kitten {
+interface Kitten {      // Re-declare the interface
   colour: string;
 }
 
-// In the other case a type cannot be changed outside of
-// its declaration.
-
+// 5.2 type
 type Puppy = {
   color: string;
 };
-
-type Puppy = {
+type Puppy = {    // Error Re-declare the type
   toys: number;
 };
 
-// Depending on your goals, this difference could be a
-// positive or a negative. However for publicly exposed
-// types, it's a better call to make them an interface.
-
-// One of the best resources for seeing all of the edge
-// cases around types vs interfaces, this stack overflow
-// thread is a good place to start:
-
-// https://stackoverflow.com/questions/37233735/typescript-interfaces-vs-types/52682220#52682220
