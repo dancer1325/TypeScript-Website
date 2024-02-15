@@ -37,6 +37,7 @@
     * if some type’s properties have default values & you want to create an object → REDUNDANT to specify it
   * `interface` via `extends`
     * although some interface’s properties have default values & you want to create an object → NEED to specify it
+    * NOT possible to extend an unionType -- Check '../handbook/everydayTypes'
 * Typescript gives better error messages for `interface`
 * `type` are closed and `interface` are open
 

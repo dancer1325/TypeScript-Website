@@ -26,11 +26,11 @@ type Robin = { nocturnal: false } & BirdInterface;      // second member can be 
 let owl: Owl = { wings: 2, nocturnal: true };
 
 // 3.2 interface  via     extends
-interface Peacock extends BirdType {
+interface Peacock extends BirdType {      // extends a type
   colourful: true;
   flies: false;
 }
-interface Chicken extends BirdInterface {
+interface Chicken extends BirdInterface {   // extends an interface
   colourful: false;
   flies: false;
 }
@@ -39,7 +39,12 @@ interface Chicken extends BirdInterface {
 //let chicken: Chicken = { colourful: false, flies: false }; // uncomment this line to check
 let chicken: Chicken = { wings:2, colourful: false, flies: false };
 
-
+// NOT possible to extend an unionType
+type mix = BirdType | Owl;
+/*interface another extends mix {       // -- uncomment this line to check
+  colourful: true;
+  flies: false;
+}*/
 
 // 4. Typescript gives better error messages for interface
 //    -> recommend it's use
