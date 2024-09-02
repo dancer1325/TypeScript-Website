@@ -7,50 +7,36 @@ preamble: >
   <p>Welcome to the first page of the handbook. If this is your first experience with TypeScript - you may want to start at one of the '<a href='https://www.typescriptlang.org/docs/handbook/intro.html#get-started'>Getting Started</a>' guides</a>
 ---
 
-Each and every value in JavaScript has a set of behaviors you can observe from running different operations.
-That sounds abstract, but as a quick example, consider some operations we might run on a variable named `message`.
+* EVERY value | JavaScript has a set of behaviors (==methods) / 
+  * if we do NOT know the value of (`message` | _Example_ )  -> we can NOT know beforehand the output / line
+  * -- can be observed from -- running different operations
+    * _Example:_ 
 
-```js
-// Accessing the property 'toLowerCase'
-// on 'message' and then calling it
-message.toLowerCase();
+      ```js
+      // 1. access the property 'toLowerCase' | 'message' & 2. calling it
+      message.toLowerCase();
+        
+      // Call 'message' directly
+      message();
+      ```
+  * behavior of each operation -- depends entirely on the -- value & 👁️we must trust ALL it's as expected | JS 👁️
+    * typical questions to wonder | lines of code
+      * is the value callable?
+      * Does it indeed have the corresponding property?
+      * if it does, is the method even callable?
+      * if both of these values are callable, what do they return?
+    * if we make a mistake rethinking -> we get an exception
+      * _Example:_ 
 
-// Calling 'message'
-message();
-```
+    ```js
+    const message = "Hello World!";
+    
+    // Running previous code -> we get TypeError: message is not a function
+    ```
 
-If we break this down, the first runnable line of code accesses a property called `toLowerCase` and then calls it.
-The second one tries to call `message` directly.
-
-But assuming we don't know the value of `message` - and that's pretty common - we can't reliably say what results we'll get from trying to run any of this code.
-The behavior of each operation depends entirely on what value we had in the first place.
-
-- Is `message` callable?
-- Does it have a property called `toLowerCase` on it?
-- If it does, is `toLowerCase` even callable?
-- If both of these values are callable, what do they return?
-
-The answers to these questions are usually things we keep in our heads when we write JavaScript, and we have to hope we got all the details right.
-
-Let's say `message` was defined in the following way.
-
-```js
-const message = "Hello World!";
-```
-
-As you can probably guess, if we try to run `message.toLowerCase()`, we'll get the same string only in lower-case.
-
-What about that second line of code?
-If you're familiar with JavaScript, you'll know this fails with an exception:
-
-```txt
-TypeError: message is not a function
-```
-
-It'd be great if we could avoid mistakes like this.
-
+* TODO:
 When we run our code, the way that our JavaScript runtime chooses what to do is by figuring out the _type_ of the value - what sorts of behaviors and capabilities it has.
-That's part of what that `TypeError` is alluding to - it's saying that the string `"Hello World!"` cannot be called as a function.
+
 
 For some values, such as the primitives `string` and `number`, we can identify their type at runtime using the `typeof` operator.
 But for other things like functions, there's no corresponding runtime mechanism to identify their types.
