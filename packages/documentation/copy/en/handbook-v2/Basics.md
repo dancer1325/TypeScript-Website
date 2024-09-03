@@ -55,63 +55,57 @@ This kind of behavior makes it hard to predict what the code will do before it r
 Seen in this way, a _type_ is the concept of describing which values can be passed to `fn` and which will crash.
 JavaScript only truly provides _dynamic_ typing - running the code to see what happens.
 
+* TODO: Check where to add
+* Reason: [ECMAScript specification](https://tc39.github.io/ecma262/)
+
 The alternative is to use a _static_ type system to make predictions about what code is expected _before_ it runs.
 
 ## Static type-checking
 
-Think back to that `TypeError` we got earlier from trying to call a `string` as a function.
-_Most people_ don't like to get any sorts of errors when running their code - those are considered bugs!
-And when we write new code, we try our best to avoid introducing new bugs.
+* TypeScript
+  * == static type-checker
+* _Static types systems_
+  * -- describe the -- shapes & behaviors | running our programs
+    * 👁️-> avoid errors | runtime 👁️
 
-If we add just a bit of code, save our file, re-run the code, and immediately see the error, we might be able to isolate the problem quickly; but that's not always the case.
-We might not have tested the feature thoroughly enough, so we might never actually run into a potential error that would be thrown!
-Or if we were lucky enough to witness the error, we might have ended up doing large refactorings and adding a lot of different code that we're forced to dig through.
-
-Ideally, we could have a tool that helps us find these bugs _before_ our code runs.
-That's what a static type-checker like TypeScript does.
-_Static types systems_ describe the shapes and behaviors of what our values will be when we run our programs.
-A type-checker like TypeScript uses that information and tells us when things might be going off the rails.
-
-```ts twoslash
-// @errors: 2349
-const message = "hello!";
-
-message();
-```
-
-Running that last sample with TypeScript will give us an error message before we run the code in the first place.
+  ```ts twoslash
+  // @errors: 2349
+  const message = "hello!";
+  
+  message();
+  ```
 
 ## Non-exception Failures
 
-So far we've been discussing certain things like runtime errors - cases where the JavaScript runtime tells us that it thinks something is nonsensical.
-Those cases come up because [the ECMAScript specification](https://tc39.github.io/ecma262/) has explicit instructions on how the language should behave when it runs into something unexpected.
+* == cases / NO errors | JS
+* if you try to access a property / does NOT exist | object -> 
+  * 👁 |(JS)   ️ returns the value `undefined` 👁️
+    * error thrown would have been expected
+    * _Example:_
 
-For example, the specification says that trying to call something that isn't callable should throw an error.
-Maybe that sounds like "obvious behavior", but you could imagine that accessing a property that doesn't exist on an object should throw an error too.
-Instead, JavaScript gives us different behavior and returns the value `undefined`:
+    ```js
+    const user = {
+      name: "Daniel",
+      age: 26,
+    };
+  
+    user.location; // returns undefined
+    ```
 
-```js
-const user = {
-  name: "Daniel",
-  age: 26,
-};
+  * 👁 |(TS)   ️ throws an error 👁️
+    * _Example:_
 
-user.location; // returns undefined
-```
+  ```ts twoslash
+  // @errors: 2339
+  const user = {
+    name: "Daniel",
+    age: 26,
+  };
+  
+  user.location;
+  ```
 
-Ultimately, a static type system has to make the call over what code should be flagged as an error in its system, even if it's "valid" JavaScript that won't immediately throw an error.
-In TypeScript, the following code produces an error about `location` not being defined:
-
-```ts twoslash
-// @errors: 2339
-const user = {
-  name: "Daniel",
-  age: 26,
-};
-
-user.location;
-```
-
+* TODO:
 While sometimes that implies a trade-off in what you can express, the intent is to catch legitimate bugs in our programs.
 And TypeScript catches _a lot_ of legitimate bugs.
 
