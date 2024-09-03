@@ -176,77 +176,19 @@ The alternative is to use a _static_ type system to make predictions about what 
 
 ## `tsc`, the TypeScript compiler
 
-* TODO:
-We've been talking about type-checking, but we haven't yet used our type-_checker_.
-Let's get acquainted with our new friend `tsc`, the TypeScript compiler.
-First we'll need to grab it via npm.
-
-```sh
-npm install -g typescript
-```
-
-> This installs the TypeScript Compiler `tsc` globally.
-> You can use `npx` or similar tools if you'd prefer to run `tsc` from a local `node_modules` package instead.
-
-Now let's move to an empty folder and try writing our first TypeScript program: `hello.ts`:
-
-```ts twoslash
-// Greets the world.
-console.log("Hello world!");
-```
-
-Notice there are no frills here; this "hello world" program looks identical to what you'd write for a "hello world" program in JavaScript.
-And now let's type-check it by running the command `tsc` which was installed for us by the `typescript` package.
-
-```sh
-tsc hello.ts
-```
-
-Tada!
-
-Wait, "tada" _what_ exactly?
-We ran `tsc` and nothing happened!
-Well, there were no type errors, so we didn't get any output in our console since there was nothing to report.
-
-But check again - we got some _file_ output instead.
-If we look in our current directory, we'll see a `hello.js` file next to `hello.ts`.
-That's the output from our `hello.ts` file after `tsc` _compiles_ or _transforms_ it into a plain JavaScript file.
-And if we check the contents, we'll see what TypeScript spits out after it processes a `.ts` file:
-
-```js
-// Greets the world.
-console.log("Hello world!");
-```
-
-In this case, there was very little for TypeScript to transform, so it looks identical to what we wrote.
-The compiler tries to emit clean readable code that looks like something a person would write.
-While that's not always so easy, TypeScript indents consistently, is mindful of when our code spans across different lines of code, and tries to keep comments around.
-
-What about if we _did_ introduce a type-checking error?
-Let's rewrite `hello.ts`:
-
-```ts twoslash
-// @noErrors
-// This is an industrial-grade general-purpose greeter function:
-function greet(person, date) {
-  console.log(`Hello ${person}, today is ${date}!`);
-}
-
-greet("Brendan");
-```
-
-If we run `tsc hello.ts` again, notice that we get an error on the command line!
-
-```txt
-Expected 2 arguments, but got 1.
-```
-
-TypeScript is telling us we forgot to pass an argument to the `greet` function, and rightfully so.
-So far we've only written standard JavaScript, and yet type-checking was still able to find problems with our code.
-Thanks TypeScript!
+* ways to get it 
+  * `npm install -g typescript`
+    * install it globally
+  * `npx tsc`
+    * got from a local `node_modules` package
+* `tsc fileName.ts`
+  * if there is NO error -> generate "fileName.js" / 
+    * keep comments
+    * indents consistently 
 
 ## Emitting with Errors
 
+* TODO:
 One thing you might not have noticed from the last example was that our `hello.js` file changed again.
 If we open that file up then we'll see that the contents still basically look the same as our input file.
 That might be a bit surprising given the fact that `tsc` reported an error about our code, but this is based on one of TypeScript's core values: much of the time, _you_ will know better than TypeScript.
