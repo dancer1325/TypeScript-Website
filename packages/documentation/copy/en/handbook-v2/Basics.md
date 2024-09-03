@@ -143,39 +143,40 @@ The alternative is to use a _static_ type system to make predictions about what 
   }
   ```
 
-## Types for Tooling
+## Types for Tooling or Tooling | TS
 
-* TODO:
-TypeScript can catch bugs when we make mistakes in our code.
-That's great, but TypeScript can _also_ prevent us from making those mistakes in the first place.
+* == editor 
+  * can
+    * suggest code completion
+    * highlight code error
+    * refactor to easily re-organize code
+    * navigation features
+    * 
+  * vs static type-checking
+    * 👁️ DONE, after 👁️
+    * built on top of it
+  * _Example:_
 
-The type-checker has information to check things like whether we're accessing the right properties on variables and other properties.
-Once it has that information, it can also start _suggesting_ which properties you might want to use.
+  <!-- prettier-ignore -->
+  ```ts twoslash
+  // @noErrors
+  // @esModuleInterop
+  import express from "express";
+  const app = express();
+  
+  app.get("/", function (req, res) {
+    res.sen
+  //       ^|   code completion while you are typing 
+  });
+  
+  app.listen(3000);
+  ```
 
-That means TypeScript can be leveraged for editing code too, and the core type-checker can provide error messages and code completion as you type in the editor.
-That's part of what people often refer to when they talk about tooling in TypeScript.
-
-<!-- prettier-ignore -->
-```ts twoslash
-// @noErrors
-// @esModuleInterop
-import express from "express";
-const app = express();
-
-app.get("/", function (req, res) {
-  res.sen
-//       ^|
-});
-
-app.listen(3000);
-```
-
-TypeScript takes tooling seriously, and that goes beyond completions and errors as you type.
-An editor that supports TypeScript can deliver "quick fixes" to automatically fix errors, refactorings to easily re-organize code, and useful navigation features for jumping to definitions of a variable, or finding all references to a given variable.
-All of this is built on top of the type-checker and is fully cross-platform, so it's likely that [your favorite editor has TypeScript support available](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support).
+* [editors with TypeScript support](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support)
 
 ## `tsc`, the TypeScript compiler
 
+* TODO:
 We've been talking about type-checking, but we haven't yet used our type-_checker_.
 Let's get acquainted with our new friend `tsc`, the TypeScript compiler.
 First we'll need to grab it via npm.
