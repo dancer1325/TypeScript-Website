@@ -105,49 +105,47 @@ The alternative is to use a _static_ type system to make predictions about what 
   user.location;
   ```
 
-* TODO:
-While sometimes that implies a trade-off in what you can express, the intent is to catch legitimate bugs in our programs.
-And TypeScript catches _a lot_ of legitimate bugs.
+* TS catch legitimate bugs
+  * typos
 
-For example: typos,
+  ```ts twoslash
+  // @noErrors
+  const announcement = "Hello World!";
+  
+  // How quickly can you spot the typos?
+  announcement.toLocaleLowercase();
+  announcement.toLocalLowerCase();
+  
+  // We probably meant to write this...
+  announcement.toLocaleLowerCase();
+  ```
 
-```ts twoslash
-// @noErrors
-const announcement = "Hello World!";
+  * uncalled functions
 
-// How quickly can you spot the typos?
-announcement.toLocaleLowercase();
-announcement.toLocalLowerCase();
+  ```ts twoslash
+  // @noUnusedLocals
+  // @errors: 2365
+  function flipCoin() {
+    // Meant to be Math.random()
+    return Math.random < 0.5;
+  }
+  ```
 
-// We probably meant to write this...
-announcement.toLocaleLowerCase();
-```
+  * basic logic errors
 
-uncalled functions,
-
-```ts twoslash
-// @noUnusedLocals
-// @errors: 2365
-function flipCoin() {
-  // Meant to be Math.random()
-  return Math.random < 0.5;
-}
-```
-
-or basic logic errors.
-
-```ts twoslash
-// @errors: 2367
-const value = Math.random() < 0.5 ? "a" : "b";
-if (value !== "a") {
-  // ...
-} else if (value === "b") {
-  // Oops, unreachable
-}
-```
+  ```ts twoslash
+  // @errors: 2367
+  const value = Math.random() < 0.5 ? "a" : "b";
+  if (value !== "a") {
+    // ...
+  } else if (value === "b") {
+    // Oops, unreachable
+  }
+  ```
 
 ## Types for Tooling
 
+* TODO:
 TypeScript can catch bugs when we make mistakes in our code.
 That's great, but TypeScript can _also_ prevent us from making those mistakes in the first place.
 
