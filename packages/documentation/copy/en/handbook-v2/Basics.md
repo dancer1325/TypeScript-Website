@@ -197,123 +197,40 @@ The alternative is to use a _static_ type system to make predictions about what 
 
 ## Explicit Types
 
-* TODO:
-Up until now, we haven't told TypeScript what `person` or `date` are.
-Let's edit the code to tell TypeScript that `person` is a `string`, and that `date` should be a `Date` object.
-We'll also use the `toDateString()` method on `date`.
-
-```ts twoslash
-function greet(person: string, date: Date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
-}
-```
-
-What we did was add _type annotations_ on `person` and `date` to describe what types of values `greet` can be called with.
-You can read that signature as "`greet` takes a `person` of type `string`, and a `date` of type `Date`".
-
-With this, TypeScript can tell us about other cases where `greet` might have been called incorrectly.
-For example...
-
-```ts twoslash
-// @errors: 2345
-function greet(person: string, date: Date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
-}
-
-greet("Maddison", Date());
-```
-
-Huh?
-TypeScript reported an error on our second argument, but why?
-
-Perhaps surprisingly, calling `Date()` in JavaScript returns a `string`.
-On the other hand, constructing a `Date` with `new Date()` actually gives us what we were expecting.
-
-Anyway, we can quickly fix up the error:
-
-```ts twoslash {4}
-function greet(person: string, date: Date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
-}
-
-greet("Maddison", new Date());
-```
-
-Keep in mind, we don't always have to write explicit type annotations.
-In many cases, TypeScript can even just _infer_ (or "figure out") the types for us even if we omit them.
-
-```ts twoslash
-let msg = "hello there!";
-//  ^?
-```
-
-Even though we didn't tell TypeScript that `msg` had the type `string` it was able to figure that out.
-That's a feature, and it's best not to add annotations when the type system would end up inferring the same type anyway.
-
-> Note: The message bubble inside the previous code sample is what your editor would show if you had hovered over the word.
+* == specify _type_
+  * although, it can _infer_ types
 
 ## Erased Types
 
-Let's take a look at what happens when we compile the above function `greet` with `tsc` to output JavaScript:
-
-```ts twoslash
-// @showEmit
-// @target: es5
-function greet(person: string, date: Date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
-}
-
-greet("Maddison", new Date());
-```
-
-Notice two things here:
-
-1. Our `person` and `date` parameters no longer have type annotations.
-2. Our "template string" - that string that used backticks (the `` ` `` character) - was converted to plain strings with concatenations.
-
-More on that second point later, but let's now focus on that first point.
-Type annotations aren't part of JavaScript (or ECMAScript to be pedantic), so there really aren't any browsers or other runtimes that can just run TypeScript unmodified.
-That's why TypeScript needs a compiler in the first place - it needs some way to strip out or transform any TypeScript-specific code so that you can run it.
-Most TypeScript-specific code gets erased away, and likewise, here our type annotations were completely erased.
-
-> **Remember**: Type annotations never change the runtime behavior of your program.
+* == removed types | compiling to JS
+  * Reason: 🧠 NOT part of JS 🧠
+  * -> NO change runtime behavior
+    * Reason: 🧠 JS is used | runtime & it has NOT types 🧠
 
 ## Downleveling
 
-One other difference from the above was that our template string was rewritten from
+* := process of rewriting code from newer version of ECMAScript --to an -- older one
+  * target
+    * by default, it's ES3
+    * `--target`
+      * specify
+      * _Example:_ `tsc --target esXXX fileName.ts`
+* _Example:_
+  * template string exist in vECS6+
+    * _Example:_
 
-```js
-`Hello ${person}, today is ${date.toDateString()}!`;
-```
+    ```ts
+    `Hello ${person}, today is ${date.toDateString()}!`;
+    ```
 
-to
-
-```js
-"Hello ".concat(person, ", today is ").concat(date.toDateString(), "!");
-```
-
-Why did this happen?
-
-Template strings are a feature from a version of ECMAScript called ECMAScript 2015 (a.k.a. ECMAScript 6, ES2015, ES6, etc. - _don't ask_).
-TypeScript has the ability to rewrite code from newer versions of ECMAScript to older ones such as ECMAScript 3 or ECMAScript 5 (a.k.a. ES3 and ES5).
-This process of moving from a newer or "higher" version of ECMAScript down to an older or "lower" one is sometimes called _downleveling_.
-
-By default TypeScript targets ES3, an extremely old version of ECMAScript.
-We could have chosen something a little bit more recent by using the [`target`](/tsconfig#target) option.
-Running with `--target es2015` changes TypeScript to target ECMAScript 2015, meaning code should be able to run wherever ECMAScript 2015 is supported.
-So running `tsc --target es2015 hello.ts` gives us the following output:
-
-```js
-function greet(person, date) {
-  console.log(`Hello ${person}, today is ${date.toDateString()}!`);
-}
-greet("Maddison", new Date());
-```
-
-> While the default target is ES3, the great majority of current browsers support ES2015.
-> Most developers can therefore safely specify ES2015 or above as a target, unless compatibility with certain ancient browsers is important.
+    ```js
+    "Hello ".concat(person, ", today is ").concat(date.toDateString(), "!");
+    ```
+* ES2015 supported by majority of current browsers
 
 ## Strictness
+
+* TODO:
 
 Different users come to TypeScript looking for different things in a type-checker.
 Some people are looking for a more loose opt-in experience which can help validate only some parts of their program, and still have decent tooling.
