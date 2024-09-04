@@ -1,7 +1,6 @@
 
 # Union types
 * Check 'unionTypes.ts'
-* `unionMember1 | unionMember2 | …`
 * if operation or method is valid for ALL unionMembers → valid for the union type
   * Solution: Narrowing -- Check '../narrowing'
 

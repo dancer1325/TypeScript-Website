@@ -34,7 +34,6 @@ We'll learn more about the syntax `T<U>` when we cover _generics_.
 
 > Note that `[number]` is a different thing; refer to the section on [Tuples](/docs/handbook/2/objects.html#tuple-types).
 
-
 ## `any`
 
 TypeScript also has a special type, `any`, that you can use whenever you don't want a particular value to cause typechecking errors.
@@ -219,44 +218,15 @@ function printName(obj: { first: string; last?: string }) {
 
 ## Union Types
 
-TypeScript's type system allows you to build new types out of existing ones using a large variety of operators.
-Now that we know how to write a few types, it's time to start _combining_ them in interesting ways.
-
 ### Defining a Union Type
 
-The first way to combine types you might see is a _union_ type.
-A union type is a type formed from two or more other types, representing values that may be _any one_ of those types.
-We refer to each of these types as the union's _members_.
-
-Let's write a function that can operate on strings or numbers:
-
-```ts twoslash
-// @errors: 2345
-function printId(id: number | string) {
-  console.log("Your ID is: " + id);
-}
-// OK
-printId(101);
-// OK
-printId("202");
-// Error
-printId({ myID: 22342 });
-```
+* `unionMember1 | unionMember2 | …`
+  * if a type match any of the union's members -> valid for the union
 
 ### Working with Union Types
 
-It's easy to _provide_ a value matching a union type - simply provide a type matching any of the union's members.
-If you _have_ a value of a union type, how do you work with it?
-
-TypeScript will only allow an operation if it is valid for _every_ member of the union.
-For example, if you have the union `string | number`, you can't use methods that are only available on `string`:
-
-```ts twoslash
-// @errors: 2339
-function printId(id: number | string) {
-  console.log(id.toUpperCase());
-}
-```
+* ONLY if operation or method is valid for ALL unionMembers → valid for the union type
+* TODO:
 
 The solution is to _narrow_ the union with code, the same as you would in JavaScript without type annotations.
 _Narrowing_ occurs when TypeScript can deduce a more specific type for a value based on the structure of the code.
