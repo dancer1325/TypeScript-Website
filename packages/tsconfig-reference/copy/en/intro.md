@@ -20,3 +20,4 @@ firstLine: A TSConfig file in a directory indicates that the directory is the ro
       * tweaking how types are added | JavaScript projects
   * `tsc --init`
     * bootstrap a [TSConfig base](https://github.com/tsconfig/bases#centralized-recommendations-for-tsconfig-bases)
+  * [TypeScript base configuration](https://github.com/tsconfig/bases)
