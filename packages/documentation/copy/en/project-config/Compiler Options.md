@@ -8,27 +8,29 @@ disable_toc: true
 
 ## Using the CLI
 
-Running `tsc` locally will compile the closest project defined by a `tsconfig.json`, or you can compile a set of TypeScript
-files by passing in a glob of files you want. When input files are specified on the command line, `tsconfig.json` files are
-ignored.
+* `tsc` compiles
+  * 👁️by default, closest project / -- defined by a -- `tsconfig.json` or
+  * set of TypeScript files -- via -- passing a glob of files
+  * if you specify the input files -> `tsconfig.json` files are ignored
 
 ```sh
-# Run a compile based on a backwards look through the fs for a tsconfig.json
+# Run a compile / look for a "tsconfig.json"
 tsc
 
-# Emit JS for just the index.ts with the compiler defaults
+# Emit JS for ONLY "index.ts" -- via -- default settings
 tsc index.ts
 
-# Emit JS for any .ts files in the folder src, with the default settings
+# Emit JS for ANY .ts files | src/   -- via -- default settings
 tsc src/*.ts
 
-# Emit files referenced in with the compiler settings from tsconfig.production.json
+# Emit files -- via -- compiler settings     tsconfig.production.json
 tsc --project tsconfig.production.json
 
+// TODO:
 # Emit d.ts files for a js file with showing compiler options which are booleans
 tsc index.js --declaration --emitDeclarationOnly
 
-# Emit a single .js file from two files via compiler options which take string arguments
+# Emit 1! .js file -- from -- 2 .ts files, -- via -- compiler options / take string arguments
 tsc app.ts util.ts --target esnext --outfile index.js
 ```
 
@@ -114,7 +116,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Print the final configuration instead of building.</p>
+<p>Print the final configuration </br> != building </p>
 </td></tr>
 
 <tr class='odd' name='version'>
