@@ -3,23 +3,24 @@ display: "Declare"
 tags: typescript types keyword
 ---
 
-The `declare` keyword is used to inform the TypeScript [Type System](#type-system) that a variable exists even if it cannot be found in the current source code.
+* `declare` keyword
+  * uses
+    * 👁️inform variable exists | TypeScript [Type System](#type-system), EVEN if it can NOT be found | current source code 👁️
+* _Example:_
 
-```ts twoslash
-// Declare that a ghost exists, and that it has a function called "boo"
-declare const ghost: { boo: () => void };
+    ```ts twoslash
+    // Declare that a ghost exists / has a function called "boo"
+    declare const ghost: { boo: () => void };
+    
+    ghost.boo();
+    ```
 
-ghost.boo();
-```
+    TS -- would [emit](#emit) -- JavaScript code like
 
-TypeScript would [emit](#emit) JavaScript code like:
-
-```ts twoslash
-// @showEmit
-// Declare that a ghost exists, and that it has a function called "boo"
-declare const ghost: { boo: () => void };
-
-ghost.boo();
-```
-
-This code could crash if there isn't other code setting up the `ghost` object elsewhere.
+    ```ts twoslash
+    // @showEmit
+    // Declare that a ghost exists / has a function called "boo"
+    declare const ghost: { boo: () => void };
+    
+    ghost.boo();
+    ```
