@@ -3,25 +3,30 @@ display: "Shape"
 tags: typescript javascript
 ---
 
-The term "shape" is used to describe the fields and values on a JavaScript object. For example, you could say that this JavaScript object:
+* "shape"
+  * uses
+    * describe the fields & values | JavaScript object
+* _Example:_ let's have the JS object
 
-```ts
-const house = {
-  name: "Shibden hall",
-  road: "Lister's Road",
-  town: "Halifax",
-  county: "West Yorkshire",
-};
-```
+    ```ts
+    const house = {
+      name: "Shibden hall",
+      road: "Lister's Road",
+      town: "Halifax",
+      county: "West Yorkshire",
+    };
+    ```
 
-has the shape:
+    has the shape:
 
-- `name`: `string`
-- `road`: `string`
-- `town`: `string`
-- `country`: `string`
+  - `name`: `string`
+  - `road`: `string`
+  - `town`: `string`
+  - `country`: `string`
 
-TypeScript can describe this shape using two different syntaxes: [Interfaces](#interface) and [Types](#type-literal)
+* _Example:_ TS can describe this shape -- via -- 2 different syntaxes
+  * [Interfaces](#interface)
+  * [Types](#type-literal)
 
 ```ts
 interface House {
