@@ -24,24 +24,26 @@ tags: typescript javascript
   - `town`: `string`
   - `country`: `string`
 
-* _Example:_ TS can describe this shape -- via -- 2 different syntaxes
+* TS can describe this shape -- via -- 2 different syntaxes
   * [Interfaces](#interface)
   * [Types](#type-literal)
 
-```ts
-interface House {
-  name: string;
-  road: string;
-  town: string;
-  country: string;
-}
+* _Example:_
 
-// or
-
-type House = {
-  name: string;
-  road: string;
-  town: string;
-  country: string;
-};
-```
+    ```ts
+    interface House {
+      name: string;
+      road: string;
+      town: string;
+      country: string;
+    }
+    
+    // or
+    
+    type House = {
+      name: string;
+      road: string;
+      town: string;
+      country: string;
+    };
+    ```
