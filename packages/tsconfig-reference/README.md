@@ -1,9 +1,8 @@
 ### Generating the TSConfig Reference
 
-This "package" hosts multi-lingual docs for the TSConfig. As much as possible is based
-off pulling data from `require("typescript")` then augmented with markdown from inside the
-[`./copy`](./copy) folder.
-
+* This "package" == multi-lingual docs for the TSConfig
+  * == pulling data from `require("typescript")` + markdown | [`./copy`](./copy) folder
+* TODO:
 Roughly:
 
 ```sh
