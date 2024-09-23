@@ -3,4 +3,7 @@ display: "Source File"
 tags: typescript compiler
 ---
 
-The representation of text which TypeScript would recognize as JavaScript or TypeScript source code.
+* source file
+  * == file / 
+    * contains TS or JS code
+    * TS compiler or any TS-aware tooling can process & interpret 
