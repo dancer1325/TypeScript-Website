@@ -7,15 +7,16 @@ oneline: Using TypeScript in ASP.NET Core
 
 ## Install ASP.NET Core and TypeScript
 
-First, install [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet) if you need it. This quick-start guide requires Visual Studio 2015 or 2017.
-
-Next, if your version of Visual Studio does not already have the latest TypeScript, you can [install it](https://www.typescriptlang.org/index.html#download-links).
+* install
+  * [ASP.NET Core](https://dotnet.microsoft.com/apps/aspnet)
+  * Visual Studio 2015 or 2017
+    * if it does NOT have the latest TypeScript -> [install typescript](https://www.typescriptlang.org/index.html#download-links)
 
 ## Create a new project
 
 1. Choose **File**
 2. Choose **New Project** (Ctrl + Shift + N)
-3. Search for **.NET Core** in the project search bar
+3. Search for **.NET Core** | project search bar
 4. Select **ASP.NET Core Web Application** and press the _Next_ button
 
 ![Visual Studio Project Window Screenshot](/images/tutorials/aspnet/createwebapp.png)
@@ -28,7 +29,7 @@ Next, if your version of Visual Studio does not already have the latest TypeScri
 
 ![Visual Studio Web Application Screenshot](/images/tutorials/aspnet/emptytemplate.png)
 
-Run the application and make sure that it works.
+7. Run the application and make sure that it works.
 
 ![A screenshot of Edge showing "Hello World" as success](/images/tutorials/aspnet/workingsite.png)
 
@@ -57,7 +58,7 @@ You may need to restart VS for the red squiggly lines below `UseDefaultFiles` an
 
 ## Add TypeScript
 
-Next we will add a new folder and call it `scripts`.
+* add a new folder / named `scripts`
 
 ![The Path of "Add" then "New Folder" in Visual Studio from a Web Project](/images/tutorials/aspnet/newfolder.png)
 
@@ -65,13 +66,13 @@ Next we will add a new folder and call it `scripts`.
 
 ## Add TypeScript code
 
-Right click on `scripts` and click **New Item**. Then choose **TypeScript File** and name the file `app.ts`
+* Right click on `scripts` and click **New Item** / choose **TypeScript File** & named it `app.ts`
 
 ![A highlight of the new folder](/images/tutorials/aspnet/tsfile.png)
 
 ### Add example code
 
-Add the following code to the `app.ts` file.
+* Add the following code | `app.ts` 
 
 ```ts
 function sayHello() {
@@ -83,10 +84,9 @@ function sayHello() {
 }
 ```
 
-## Set up the build
+## Set up the build == Configure the TypeScript compiler
 
-_Configure the TypeScript compiler_
-
+* TODO:
 First we need to tell TypeScript how to build. Right click on `scripts` and click **New Item**. Then choose **TypeScript Configuration File** and use the default name of `tsconfig.json`
 
 ![A screenshot showing the new file dialogue with TypeScript JSON Config selected](/images/tutorials/aspnet/tsconfig.png)
@@ -113,7 +113,9 @@ Replace the contents of the `tsconfig.json` file with:
 
 Note: `"ESNext"` targets latest supported
 
-[`noImplicitAny`](/tsconfig#noImplicitAny) is good idea whenever you’re writing new code — you can make sure that you don’t write any untyped code by mistake. `"compileOnSave"` makes it easy to update your code in a running web app.
+[`noImplicitAny`](/tsconfig#noImplicitAny) is good idea whenever you’re writing new code — you can make sure that you don’t write any untyped code by mistake. 
+* `"compileOnSave"`
+  * makes it easy to update your code | running web app
 
 #### _Set up NPM_
 
