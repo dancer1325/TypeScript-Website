@@ -109,7 +109,7 @@ tsc app.ts util.ts --target esnext --outfile toone.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.</p>
+<p>path to a configuration file, OR folder with a 'tsconfig.json'</p>
 </td></tr>
 
 <tr class='even' name='showConfig'>
