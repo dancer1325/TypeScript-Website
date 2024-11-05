@@ -38,7 +38,7 @@ const cats: Record<CatName, CatInfo> = {
   mordred: { age: 16, breed: "British Shorthair" },
 };
 
-const boris = cats.boris;
+const boris = cats.boris;   // as an object
 
 // Get access to the values
 console.log('boris.age ' + boris.age + ' boris.breed ' + boris.breed);
