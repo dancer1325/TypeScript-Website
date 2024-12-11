@@ -157,48 +157,44 @@ permalink: /docs/handbook/declaration-files/templates/module-d-ts.html
 
 ## Types in Modules
 
-* TODO:
-You may want to provide a type for JavaScript code which does not exist
+* use cases
+  * type SOMETHING / you want to export
+    * -> those types can then be re-used -- , via `import` or `import type` | TS code or [JSDoc imports](/docs/handbook/jsdoc-supported-types.html#import-types), by -- consumers of the modules 
+    * _Example:_ | JavaScript, typing does NOT exist
 
-```js
-function getArrayMetadata(arr) {
-  return {
-    length: getArrayLength(arr),
-    firstObject: arr[0],
-  };
-}
+      ```js
+      function getArrayMetadata(arr) {
+        return {
+          length: getArrayLength(arr),
+          firstObject: arr[0],
+        };
+      }
+      
+      module.exports = {
+        getArrayMetadata,
+      };
+      ```
+      ==, BUT typing | TS
 
-module.exports = {
-  getArrayMetadata,
-};
-```
+      ```ts
+      export type ArrayMetadata = {
+        length: number;
+        firstObject: any | undefined;
+      };
+      export function getArrayMetadata(arr: any[]): ArrayMetadata;
+      ```
+      ==, BUT [using generics](/docs/handbook/generics.html#generic-types) | TS
 
-This can be described with:
-
-```ts
-export type ArrayMetadata = {
-  length: number;
-  firstObject: any | undefined;
-};
-export function getArrayMetadata(arr: any[]): ArrayMetadata;
-```
-
-This example is a good case for [using generics](/docs/handbook/generics.html#generic-types) to provide richer type information:
-
-```ts
-export type ArrayMetadata<ArrType> = {
-  length: number;
-  firstObject: ArrType | undefined;
-};
-
-export function getArrayMetadata<ArrType>(
-  arr: ArrType[]
-): ArrayMetadata<ArrType>;
-```
-
-Now the type of the array propagates into the `ArrayMetadata` type.
-
-The types which are exported can then be re-used by consumers of the modules using either `import` or `import type` in TypeScript code or [JSDoc imports](/docs/handbook/jsdoc-supported-types.html#import-types).
+      ```ts
+      export type ArrayMetadata<ArrType> = {
+        length: number;
+        firstObject: ArrType | undefined;
+      };
+      
+      export function getArrayMetadata<ArrType>(
+        arr: ArrType[]
+      ): ArrayMetadata<ArrType>;
+      ```
 
 ### Namespaces in Module Code
 
@@ -240,78 +236,82 @@ export as namespace moduleName;
 
 ## Reference Example
 
-To give you an idea of how all these pieces can come together, here is a reference `.d.ts` to start with when making a new module
+* goal
+  * gather ALL pieces together
 
-```ts
-// Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
-// Project: [~THE PROJECT NAME~]
-// Definitions by: [~YOUR NAME~] <[~A URL FOR YOU~]>
+* reference example
+  * uses
+    * starting point -- to make a -- NEW module
 
-/*~ This is the module template file. You should rename it to index.d.ts
- *~ and place it in a folder with the same name as the module.
- *~ For example, if you were writing a file for "super-greeter", this
- *~ file should be 'super-greeter/index.d.ts'
- */
+  ```.d.ts
+  // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
+  // Project: [~THE PROJECT NAME~]
+  // Definitions by: [~YOUR NAME~] <[~A URL FOR YOU~]>
+  
+  /*~ This is the module template file. You should rename it to index.d.ts
+   *~ and place it in a folder with the same name as the module.
+   *~ For example, if you were writing a file for "super-greeter", this
+   *~ file should be 'super-greeter/index.d.ts'
+   */
+  
+  /*~ If this module is a UMD module that exposes a global variable 'myLib' when
+   *~ loaded outside a module loader environment, declare that global here.
+   *~ Otherwise, delete this declaration.
+   */
+  export as namespace myLib;
+  
+  /*~ If this module exports functions, declare them like so.
+   */
+  export function myFunction(a: string): string;
+  export function myOtherFunction(a: number): number;
+  
+  /*~ You can declare types that are available via importing the module */
+  export interface SomeType {
+    name: string;
+    length: number;
+    extras?: string[];
+  }
+  
+  /*~ You can declare properties of the module using const, let, or var */
+  export const myField: number;
+  ```
 
-/*~ If this module is a UMD module that exposes a global variable 'myLib' when
- *~ loaded outside a module loader environment, declare that global here.
- *~ Otherwise, delete this declaration.
- */
-export as namespace myLib;
+### Example1: Library file layout
 
-/*~ If this module exports functions, declare them like so.
- */
-export function myFunction(a: string): string;
-export function myOtherFunction(a: number): number;
+* library / == MULTIPLE modules
 
-/*~ You can declare types that are available via importing the module */
-export interface SomeType {
-  name: string;
-  length: number;
-  extras?: string[];
-}
+  ```
+  myLib
+    +---- index.js
+    +---- foo.js
+    +---- bar
+           +---- index.js
+           +---- baz.js
+  ```
 
-/*~ You can declare properties of the module using const, let, or var */
-export const myField: number;
-```
+  * -> can be imported as
 
-### Library file layout
+  ```js
+  var a = require("myLib");
+  var b = require("myLib/foo");
+  var c = require("myLib/bar");
+  var d = require("myLib/bar/baz");
+  ```
 
-The layout of your declaration files should mirror the layout of the library.
+    * -> declaration files should be
 
-A library can consist of multiple modules, such as
-
-```
-myLib
-  +---- index.js
-  +---- foo.js
-  +---- bar
-         +---- index.js
-         +---- baz.js
-```
-
-These could be imported as
-
-```js
-var a = require("myLib");
-var b = require("myLib/foo");
-var c = require("myLib/bar");
-var d = require("myLib/bar/baz");
-```
-
-Your declaration files should thus be
-
-```
-@types/myLib
-  +---- index.d.ts
-  +---- foo.d.ts
-  +---- bar
-         +---- index.d.ts
-         +---- baz.d.ts
-```
+      ```
+      @types/myLib
+        +---- index.d.ts
+        +---- foo.d.ts
+        +---- bar
+               +---- index.d.ts
+               +---- baz.d.ts
+      ```
 
 ### Testing your types
 
+* TODO:
 If you are planning on submitting these changes to DefinitelyTyped for everyone to also use, then we recommend you:
 
 > 1. Create a new folder in `node_modules/@types/[libname]`
