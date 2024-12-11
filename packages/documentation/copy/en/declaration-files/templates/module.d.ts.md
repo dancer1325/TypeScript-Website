@@ -121,41 +121,43 @@ permalink: /docs/handbook/declaration-files/templates/module-d-ts.html
 
 ## Handling Many Consuming Import
 
-* TODO:
-There are many ways to import a module in modern consuming code:
+* There are MANY ways (`require`, `from`, ...) to import a module | modern consuming code
+  * _Example:_ 
 
-```ts
-const fastify = require("fastify");
-const { fastify } = require("fastify");
-import fastify = require("fastify");
-import * as Fastify from "fastify";
-import { fastify, FastifyInstance } from "fastify";
-import fastify from "fastify";
-import fastify, { FastifyInstance } from "fastify";
-```
+  ```ts
+  const fastify = require("fastify");
+  const { fastify } = require("fastify");
+  import fastify = require("fastify");
+  import * as Fastify from "fastify";
+  import { fastify, FastifyInstance } from "fastify";
+  import fastify from "fastify";
+  import fastify, { FastifyInstance } from "fastify";
+  ```
 
-Covering all of these cases requires the JavaScript code to actually support all of these patterns.
-To support many of these patterns, a CommonJS module would need to look something like:
+  * requirements
+    * JavaScript code support ALL of these patterns
+      * _Example:_ CommonJS module / support MANY of these patterns
 
-```js
-class FastifyInstance {}
-
-function fastify() {
-  return new FastifyInstance();
-}
-
-fastify.FastifyInstance = FastifyInstance;
-
-// Allows for { fastify }
-fastify.fastify = fastify;
-// Allows for strict ES Module support
-fastify.default = fastify;
-// Sets the default export
-module.exports = fastify;
-```
+        ```js
+        class FastifyInstance {}
+        
+        function fastify() {
+          return new FastifyInstance();
+        }
+        
+        fastify.FastifyInstance = FastifyInstance;
+        
+        // Allows for { fastify }
+        fastify.fastify = fastify;
+        // Allows for strict ES Module support
+        fastify.default = fastify;
+        // Sets the default export
+        module.exports = fastify;
+        ```
 
 ## Types in Modules
 
+* TODO:
 You may want to provide a type for JavaScript code which does not exist
 
 ```js
