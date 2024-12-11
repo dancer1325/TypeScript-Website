@@ -4,111 +4,124 @@ layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-d-ts.html
 ---
 
-## Comparing JavaScript to an example DTS
-
 ## Common CommonJS Patterns
 
-A module using CommonJS patterns uses `module.exports` to describe the exported values. For example, here is a module which exports a function and a numerical constant:
+* module / uses CommonJS patterns -> describe the exported values -- via -- `module.exports`
+  * _Example:_ module / exports a function & numerical constant
 
-```js
-const maxInterval = 12;
+    ```js
+    const maxInterval = 12;
+    
+    function getArrayLength(arr) {
+      return arr.length;
+    }
+    
+    module.exports = {
+      getArrayLength,
+      maxInterval,
+    };
+    ```
 
-function getArrayLength(arr) {
-  return arr.length;
-}
+    == -- via -- `.d.ts`
 
-module.exports = {
-  getArrayLength,
-  maxInterval,
-};
-```
+    ```.d.ts
+    export function getArrayLength(arr: any[]): number;
+    export const maxInterval: 12;
+    ```
 
-This can be described by the following `.d.ts`:
+* TypeScript playground 
+  * from ".ts" -> show the equivalent
+    * `.d.ts`
+    * `.js` 
+  * _Example:_ [playgroundExample](https://www.typescriptlang.org/play/?#code/PTAEHUFMBsGMHsC2lQBd5oBYoCoE8AHSAZVgCcBLA1UABWgEM8BzM+AVwDsATAGiwoBnUENANQAd0gAjQRVSQAUCEmYKsTKGYUAbpGF4OY0BoadYKdJMoL+gzAzIoz3UNEiPOofEVKVqAHSKymAAmkYI7NCuqGqcANag8ABmIjQUXrFOKBJMggBcISGgoAC0oACCbvCwDKgU8JkY7p7ehCTkVDQS2E6gnPCxGcwmZqDSTgzxxWWVoASMFmgYkAAeRJTInN3ymj4d-jSCeNsMq-wuoPaOltigAKoASgAywhK7SbGQZIIz5VWCFzSeCrZagNYbChbHaxUDcCjJZLfSDbExIAgUdxkUBIursJzCFJtXydajBBCcQQ0MwAUVWDEQC0gADVHBQGNJ3KAALygABEAAkYNAMOB4GRonzFBTBPB3AERcwABS0+mM9ysygc9wASmCKhwzQ8ZC8iHFzmB7BoXzcZmY7AYzEg-Fg0HUiQ58D0Ii8fLpDKZgj5SWxfPADlQAHJhAA5SASPlBFQAeS+ZHegmdWkgR1QjgUrmkeFATjNOmGWH0KAQiGhwkuNok4uiIgMHGxCyYrA4PCCJSAA)
 
-```ts
-export function getArrayLength(arr: any[]): number;
-export const maxInterval: 12;
-```
+* `.d.ts`
+  * syntax 
+    * == [ES Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) syntax
+  * if you run `tsc fileName.d.ts` -> NOTHING generated
+  * vs ES Modules
+    * 👀recommended to use ES Modules 👀
+      * Reason: 🧠was ratified by TC39 in 2015 | ES2015 (ES6) 🧠
+    * historically used `.d.ts` -- by -- transpilers
+  * JS codebase / use ES Modules -> has a `.d.ts` equivalent
+    * TODO: Commands to run?
+      * Attempt1: `tsc --declaration --emitDeclarationOnly --outDir types module.js`
+    * _Example:_ 
 
-The TypeScript playground can show you the `.d.ts` equivalent for JavaScript code. You can [try it yourself here](/play?useJavaScript=true#code/GYVwdgxgLglg9mABAcwKZQIICcsEMCeAMqmMlABYAUuOAlIgN6IBQiiW6IWSNWAdABsSZcswC+zCAgDOURAFtcADwAq5GKUQBeRAEYATM2by4AExBC+qJQAc4WKNO2NWKdNjxFhFADSvFquqk4sxAA).
+    ```js
+    export function getArrayLength(arr) {
+      return arr.length;
+    }
+    ```
+    ==
 
-The `.d.ts` syntax intentionally looks like [ES Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) syntax.
-ES Modules was ratified by TC39 in 2015 as part of ES2015 (ES6), while it has been available via transpilers for a long time, however if you have a JavaScript codebase using ES Modules:
-
-```js
-export function getArrayLength(arr) {
-  return arr.length;
-}
-```
-
-This would have the following `.d.ts` equivalent:
-
-```ts
-export function getArrayLength(arr: any[]): number;
-```
+    ```.d.ts
+    export function getArrayLength(arr: any[]): number;
+    ```
 
 ### Default Exports
 
-In CommonJS you can export any value as the default export, for example here is a regular expression module:
+* | CommonJS, you can use `export default` | ".d.ts"
+  * requirements
+    * [`esModuleInterop: true`](/tsconfig#esModuleInterop)
+      * otherwise -> use `export=`
+        * _Example:_ 
+        
+        ```.d.ts
+        declare function getArrayLength(arr: any[]): number;
+        declare namespace getArrayLength {
+        declare const maxInterval: 12;
+        }
+        export = getArrayLength;
+        ```
+  * allowed |
+    * any value
+      * _Examples:_
+        * _Example1:_ regular expression module
 
-```js
-module.exports = /hello( world)?/;
-```
+          ```js
+          module.exports = /hello( world)?/;
+          ```
+          == 
+          ```.d.ts
+          declare const helloWorld: RegExp;
+          export default helloWorld;
+          ```
+        * _Example2:_ number
 
-Which can be described by the following .d.ts:
-
-```ts
-declare const helloWorld: RegExp;
-export default helloWorld;
-```
-
-Or a number:
-
-```js
-module.exports = 3.142;
-```
-
-```ts
-declare const pi: number;
-export default pi;
-```
-
-One style of exporting in CommonJS is to export a function.
-Because a function is also an object, then extra fields can be added and are included in the export.
-
-```js
-function getArrayLength(arr) {
-  return arr.length;
-}
-getArrayLength.maxInterval = 12;
-
-module.exports = getArrayLength;
-```
-
-Which can be described with:
-
-```ts
-export default function getArrayLength(arr: any[]): number;
-export const maxInterval: 12;
-```
-
-Note that using `export default` in your .d.ts files requires [`esModuleInterop: true`](/tsconfig#esModuleInterop) to work.
-If you can't have `esModuleInterop: true` in your project, such as when you're submitting a PR to Definitely Typed, you'll have to use the `export=` syntax instead. This older syntax is harder to use but works everywhere.
-Here's how the above example would have to be written using `export=`:
-
-```ts
-declare function getArrayLength(arr: any[]): number;
-declare namespace getArrayLength {
-  declare const maxInterval: 12;
-}
-
-export = getArrayLength;
-```
-
-See [Module: Functions](/docs/handbook/declaration-files/templates/module-function-d-ts.html) for details of how that works, and the [Modules reference](/docs/handbook/modules.html) page.
+          ```js
+          module.exports = 3.142;
+          ```
+          ==  
+          ```.d.ts
+          declare const pi: number;
+          export default pi;
+          ```
+    * function
+      * == style of exporting
+      * extra fields can be added & are | export
+        * Reason: 🧠a function is ALSO an object 🧠
+      * _Example:_
+      ```js
+      function getArrayLength(arr) {
+        return arr.length;
+      }
+      getArrayLength.maxInterval = 12;    // add extra fields
+    
+      module.exports = getArrayLength;
+      ```
+      ==
+      ```.d.ts
+      export default function getArrayLength(arr: any[]): number;
+      export const maxInterval: 12;
+      ```
+* see
+  * [Module: Functions](/docs/handbook/declaration-files/templates/module-function-d-ts.html)
+  * [Modules reference](/docs/handbook/modules.html)
 
 ## Handling Many Consuming Import
 
+* TODO:
 There are many ways to import a module in modern consuming code:
 
 ```ts
