@@ -874,7 +874,7 @@ tsc app.ts util.ts --target esnext --outfile toone.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Disable emitting files from a compilation.</p>
+<p>NO emit files | compilation.</p>
 </td></tr>
 
 <tr class='even' name='noEmitHelpers'>
@@ -896,7 +896,7 @@ tsc app.ts util.ts --target esnext --outfile toone.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Disable emitting files if any type checking errors are reported.</p>
+<p> if ANY type checking errors are reported -> NO emit files </p>
 </td></tr>
 
 <tr class='even' name='noErrorTruncation'>
