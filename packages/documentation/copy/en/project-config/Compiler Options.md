@@ -55,7 +55,7 @@ tsc app.ts util.ts --target esnext --outfile toone.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Show all compiler options.</p>
+<p>Show ALL compiler options</p>
 </td></tr>
 
 <tr class='even' name='generateTrace'>
@@ -837,11 +837,11 @@ tsc app.ts util.ts --target esnext --outfile toone.js
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
   <td><p><code>classic</code>, <code>node10</code>/<code>node</code>, <code>node16</code>, <code>nodenext</code>, or <code>bundler</code></p>
 </td>
-  <td><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code>, or <code>ES6</code>/<code>ES2015</code>; Matches if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code>; <code>Node</code> otherwise.</p>
+  <td><p>if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code>, or <code>ES6</code>/<code>ES2015</code> -> <code>Classic</code> <br> if <a href="#module"><code>module</code></a> == <code>node16</code> or <code>nodenext</code> -> <code>module</code> == <code>moduleResolution</code> <br> <code>Node</code>, otherwise</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify how TypeScript looks up a file from a given module specifier.</p>
+<p>👀how TypeScript looks up a file | given module specifier👀</p>
 </td></tr>
 
 <tr class='odd' name='moduleSuffixes'>
