@@ -7,70 +7,71 @@ permalink: /docs/handbook/declaration-files/templates/global-d-ts.html
 ## Global Libraries
 
 <!-- 
-TODO:
-
-1. mention that global nearly always means 'browser'
+TODO: 
 2. if you have a global library that you suspect is UMD, look for instructions on
    a. how to import it
    b. -OR- how to make it work with webpack
 3. Make the page follow the structure of documentation,usage,source example.
-
 -->
 
-A _global_ library is one that can be accessed from the global scope (i.e. without using any form of `import`).
-Many libraries simply expose one or more global variables for use.
-For example, if you were using [jQuery](https://jquery.com/), the `$` variable can be used by simply referring to it:
+* _global_ library
+  * global == 'browser'
+  * == library / can be accessed -- from the -- global scope ( == WITHOUT using any form of `import`)
+  * guidance | documentation of a global library, about how to use the library
 
-```ts
-$(() => {
-  console.log("hello!");
-});
-```
+    ```html
+    <script src="http://a.great.cdn.for/someLib.js"></script>
+    ```
+  * TODAY,
+    * MOST are actually written -- as -- UMD libraries 
 
-You'll usually see guidance in the documentation of a global library of how to use the library in an HTML script tag:
+* global declaration file
+  * | BEFORE writing it, check that is NOT actually UMD
 
-```html
-<script src="http://a.great.cdn.for/someLib.js"></script>
-```
+* MANY libraries simply expose >=1 global variables for use
+  * _Example:_ if you were using [jQuery](https://jquery.com/) -> `$` variable -- can be used by simply -- referring to it
 
-Today, most popular globally-accessible libraries are actually written as UMD libraries (see below).
-UMD library documentation is hard to distinguish from global library documentation.
-Before writing a global declaration file, make sure the library isn't actually UMD.
+    ```ts
+    $(() => {
+      console.log("hello!");
+    });
+    ```
+
+* UMD library documentation
+  * vs global library documentation
+    * hard to distinguish
 
 ## Identifying a Global Library from Code
 
-Global library code is usually extremely simple.
-A global "Hello, world" library might look like this:
+* Global library code
+  * extremely simple
+    * _Example:_
 
-```js
-function createGreeting(s) {
-  return "Hello, " + s;
-}
-```
-
-or like this:
-
-```js
-window.createGreeting = function (s) {
-  return "Hello, " + s;
-};
-```
-
-When looking at the code of a global library, you'll usually see:
-
-- Top-level `var` statements or `function` declarations
-- One or more assignments to `window.someName`
-- Assumptions that DOM primitives like `document` or `window` exist
-
-You _won't_ see:
-
-- Checks for, or usage of, module loaders like `require` or `define`
-- CommonJS/Node.js-style imports of the form `var fs = require("fs");`
-- Calls to `define(...)`
-- Documentation describing how to `require` or import the library
+        ```js
+        function createGreeting(s) {
+          return "Hello, " + s;
+        }
+        
+        // or
+        window.createGreeting = function (s) {
+        return "Hello, " + s;
+        }; 
+        ```
+  * typical elements
+    * Top-level `var` statements or `function` declarations
+    * \>=1 assignments to `window.someName`
+    * DOM primitives exist
+      * _Example:_ `document` or `window`
+    * / NOT see
+      * Checks for, or usage of, module loaders
+        * _Example:_ `require` or `define`
+      * CommonJS/Node.js-style imports of the form `var fs = require("fs");`
+      * Calls to `define(...)`
+      * Documentation / describe how to `require` or import the library
 
 ## Examples of Global Libraries
 
+* TODO:
 Because it's usually easy to turn a global library into a UMD library, very few popular libraries are still written in the global style.
 However, libraries that are small and require the DOM (or have _no_ dependencies) may still be global.
 
