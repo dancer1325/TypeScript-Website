@@ -4,7 +4,7 @@ tags: typescript types keyword
 ---
 
 * interface
-  * == way to describe the [Shape](#shape) of a JS object
+  * == way to describe the [Shape](shape.md) of a JS object
 * _Example:_ dog could be described in the following format
 
     ```ts twoslash
@@ -15,4 +15,4 @@ tags: typescript types keyword
     }
     ```
 
-  ⭐️ == ONLY an object / has `name`, `dateOfBirth` & `markings` -- could be classed as a -- "Dog" | [Type System](#type-system) ⭐
+  ⭐️ == ONLY an object / has `name`, `dateOfBirth` & `markings` -- could be classed as a -- "Dog" | [Type System](type-system.md) ⭐
