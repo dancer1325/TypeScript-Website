@@ -135,26 +135,6 @@ function freeze<Type>(obj: Type): Readonly<Type>;
 * uses
   * map the properties of a type -- to -- ANOTHER type
 
-##### Example
-
-```ts twoslash
-interface CatInfo {
-  age: number;
-  breed: string;
-}
-
-type CatName = "miffy" | "boris" | "mordred";
-
-const cats: Record<CatName, CatInfo> = {
-  miffy: { age: 10, breed: "Persian" },
-  boris: { age: 5, breed: "Maine Coon" },
-  mordred: { age: 16, breed: "British Shorthair" },
-};
-
-cats.boris;
-// ^?
-```
-
 ## `Pick<Type, Keys>`
 
 <blockquote class=bg-reading>
