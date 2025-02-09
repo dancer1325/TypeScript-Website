@@ -437,46 +437,24 @@ You'll learn more about these concepts in later chapters, so don't worry if you 
 
 For the most part, you can choose based on personal preference, and TypeScript will tell you if it needs something to be the other kind of declaration. If you would like a heuristic, use `interface` until you need to use features from `type`.
 
-## Type Assertions
+## Type Assertions 
 
-Sometimes you will have information about the type of a value that TypeScript can't know about.
-
-For example, if you're using `document.getElementById`, TypeScript only knows that this will return _some_ kind of `HTMLElement`, but you might know that your page will always have an `HTMLCanvasElement` with a given ID.
-
-In this situation, you can use a _type assertion_ to specify a more specific type:
-
-```ts twoslash
-const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
-```
-
-Like a type annotation, type assertions are removed by the compiler and won't affect the runtime behavior of your code.
-
-You can also use the angle-bracket syntax (except if the code is in a `.tsx` file), which is equivalent:
-
-```ts twoslash
-const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
-```
-
-> Reminder: Because type assertions are removed at compile-time, there is no runtime checking associated with a type assertion.
-> There won't be an exception or `null` generated if the type assertion is wrong.
-
-TypeScript only allows type assertions which convert to a _more specific_ or _less specific_ version of a type.
-This rule prevents "impossible" coercions like:
-
-```ts twoslash
-// @errors: 2352
-const x = "hello" as number;
-```
-
-Sometimes this rule can be too conservative and will disallow more complex coercions that might be valid.
-If this happens, you can use two assertions, first to `any` (or `unknown`, which we'll introduce later), then to the desired type:
-
-```ts twoslash
-declare const expr: any;
-type T = { a: 1; b: 2; c: 3 };
-// ---cut---
-const a = (expr as any) as T;
-```
+* ways
+  * `... as concreteType`
+  * `<concreteType>...`
+    * ❌| ".tsx" NOT valid ❌
+* allows
+  * specifying MORE concrete type / 
+    * ⚠️if 2 types are COMPLETELY incompatible -> error | compile time ⚠️ 
+      * OTHERWISE, error | runtime
+    * 👀too conservative -> cast `any` or `unknown` + cast `desiredType` 👀
+* use cases
+  * you know value's type / TypeScript can NOT know  
+* how is it used under the hood?
+  * | compile-time, type assertions are removed 
+    * Reason: 🧠JS does NOT get about types 🧠
+    * == type annotation
+    * -> 👀NOT affect | runtime 👀
 
 ## Literal Types
 
