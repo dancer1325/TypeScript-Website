@@ -3,6 +3,7 @@ display: "Lib"
 oneline: "Specify a set of bundled library declaration files that describe the target runtime environment."
 ---
 
+* TODO:
 TypeScript includes a default set of type definitions for built-in JS APIs (like `Math`), as well as type definitions for things found in browser environments (like `document`).
 TypeScript also includes APIs for newer JS features matching the [`target`](#target) you specify; for example the definition for `Map` is available if [`target`](#target) is `ES6` or newer.
 
