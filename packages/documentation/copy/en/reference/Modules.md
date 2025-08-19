@@ -6,154 +6,101 @@ oneline: How modules work in TypeScript
 translatable: true
 ---
 
-Starting with ECMAScript 2015, JavaScript has a concept of modules. TypeScript shares this concept.
+* Module
+  * history
+    * released | ECMAScript 2015
+  * AVAILABLE |
+    * JS
+    * TS
+  * are declarative
+    * == 👀relationships BETWEEN modules are specified -- via -- | file level, imports & exports👀
+  * 's execution
+    * | their OWN scope
+      * != global scope
+      * == variables, functions, classes, etc. / declared | module
+        * | outside the module,
+          * by default, ❌NOT visible❌
+          * 👀if you want to
+            * make them visible -> explicitly export -- via -- [some `export` forms](#export)👀
+            * consume them -> imported -- via -- 
+              * [some `import` forms](#import)
+              * module loader
 
-Modules are executed within their own scope, not in the global scope; this means that variables, functions, classes, etc. declared in a module are not visible outside the module unless they are explicitly exported using one of the [`export` forms](#export).
-Conversely, to consume a variable, function, class, interface, etc. exported from a different module, it has to be imported using one of the [`import` forms](#import).
-
-Modules are declarative; the relationships between modules are specified in terms of imports and exports at the file level.
-
-Modules import one another using a module loader.
-At runtime the module loader is responsible for locating and executing all dependencies of a module before executing it.
-Well-known module loaders used in JavaScript are Node.js's loader for [CommonJS](https://wikipedia.org/wiki/CommonJS) modules and the [RequireJS](http://requirejs.org/) loader for [AMD](https://github.com/amdjs/amdjs-api/blob/master/AMD.md) modules in Web applications.
-
-In TypeScript, just as in ECMAScript 2015, any file containing a top-level `import` or `export` is considered a module.
-Conversely, a file without any top-level `import` or `export` declarations is treated as a script whose contents are available in the global scope (and therefore to modules as well).
+* module loader
+  * | runtime,
+    * responsible for
+      * locating
+      * BEFORE executing it, executing ALL module's dependencies  
+  * existing ones
+    * | JS,
+      * Node.js's loader 
+        * -- for -- [CommonJS](https://wikipedia.org/wiki/CommonJS) modules
+      * [RequireJS](http://requirejs.org/) loader
+        * -- for -- [AMD](https://github.com/amdjs/amdjs-api/blob/master/AMD.md) modules | Web applications
+    * | TS & ECMAScript 2015 
+      * module 
+        * == 👀ANY file / contains a top-level `import` or `export`👀 
+      * file / WITHOUT top-level `import` or `export` declarations
+        * == 👀script / 's contents are AVAILABLE | global scope👀
 
 ## Export
 
 ### Exporting a declaration
 
-Any declaration (such as a variable, function, class, type alias, or interface) can be exported by adding the `export` keyword.
-
-##### StringValidator.ts
-
-```ts
-export interface StringValidator {
-  isAcceptable(s: string): boolean;
-}
-```
-
-##### ZipCodeValidator.ts
-
-```ts
-import { StringValidator } from "./StringValidator";
-
-export const numberRegexp = /^[0-9]+$/;
-
-export class ZipCodeValidator implements StringValidator {
-  isAcceptable(s: string) {
-    return s.length === 5 && numberRegexp.test(s);
-  }
-}
-```
+* -- via -- `export`
+* declaration of 
+  * variable,
+  * function,
+  * class,
+  * type alias,
+  * interface 
 
 ### Export statements
 
-Export statements are handy when exports need to be renamed for consumers, so the above example can be written as:
-
-```ts
-class ZipCodeValidator implements StringValidator {
-  isAcceptable(s: string) {
-    return s.length === 5 && numberRegexp.test(s);
-  }
-}
-export { ZipCodeValidator };
-export { ZipCodeValidator as mainValidator };
-```
+* uses
+  * exports / consumers can rename
 
 ### Re-exports
 
-Often modules extend other modules, and partially expose some of their features.
-A re-export does not import it locally, or introduce a local variable.
+* == modules / 
+  * extend OTHER modules
+  * expose some of OTHER modules' features /
+    * NOT 
+      * import it locally
+      * introduce a local variable
 
-##### ParseIntBasedZipCodeValidator.ts
+* uses
+  * module / 👀wrap >= 1 modules & combine ALL exports👀
 
-```ts
-export class ParseIntBasedZipCodeValidator {
-  isAcceptable(s: string) {
-    return s.length === 5 && parseInt(s).toString() === s;
-  }
-}
-
-// Export original validator but rename it
-export { ZipCodeValidator as RegExpBasedZipCodeValidator } from "./ZipCodeValidator";
-```
-
-Optionally, a module can wrap one or more modules and combine all their exports using `export * from "module"` syntax.
-
-##### AllValidators.ts
-
-```ts
-export * from "./StringValidator"; // exports 'StringValidator' interface
-export * from "./ZipCodeValidator"; // exports 'ZipCodeValidator' class and 'numberRegexp' constant value
-export * from "./ParseIntBasedZipCodeValidator"; //  exports the 'ParseIntBasedZipCodeValidator' class
-// and re-exports 'RegExpBasedZipCodeValidator' as alias
-// of the 'ZipCodeValidator' class from 'ZipCodeValidator.ts'
-// module.
-```
+* `export * from "module"`
 
 ## Import
 
-Importing is just about as easy as exporting from a module.
-Importing an exported declaration is done through using one of the `import` forms below:
+* 👀types👀
+  * 1! export -- from a -- module 
+    * it can be renamed
+  * import the ENTIRE module | 1! variable
+    * == use `as`
+  * import the ENTIRE module
+    * ❌NOT recommended❌
+    * use cases
+      * modules / set up global state / can be used by other modules
+    * ❌NOT require❌
+      * module / has exports
+  * ways to import a `type`
+    * | TypeScript v3.8-,
+      * -- via -- `import`
+    * | TypeScript v3.8+,
+      * -- via --
+        * `import`
+        * `import type` 
+          * -> 👀| JS, it's removed👀
+          * see [3.8 release notes](/packages/documentation/copy/en/release-notes/TypeScript%203.8.md#type-only-imports-and-export)
+    * | TypeScript v4.5+,
+      * `import { ..., type someTypeToImport} from "..."`
+        * -> 👀| JS, it's removed👀
 
-### Import a single export from a module
-
-```ts
-import { ZipCodeValidator } from "./ZipCodeValidator";
-
-let myValidator = new ZipCodeValidator();
-```
-
-imports can also be renamed
-
-```ts
-import { ZipCodeValidator as ZCV } from "./ZipCodeValidator";
-let myValidator = new ZCV();
-```
-
-### Import the entire module into a single variable, and use it to access the module exports
-
-```ts
-import * as validator from "./ZipCodeValidator";
-let myValidator = new validator.ZipCodeValidator();
-```
-
-### Import a module for side-effects only
-
-Though not recommended practice, some modules set up some global state that can be used by other modules.
-These modules may not have any exports, or the consumer is not interested in any of their exports.
-To import these modules, use:
-
-```ts
-import "./my-module.js";
-```
-
-### Importing Types
-
-Prior to TypeScript 3.8, you can import a type using `import`.
-With TypeScript 3.8, you can import a type using the `import` statement, or using `import type`.
-
-```ts
-// Re-using the same import
-import { APIResponseType } from "./api";
-
-// Explicitly use import type
-import type { APIResponseType } from "./api";
-
-// Explicitly pull out a value (getResponse) and a type (APIResponseType) 
-import { getResponse, type APIResponseType} from "./api";
-```
-
-Any explicitly marked `type` import is guaranteed to be removed from your JavaScript, and tools like Babel can make better assumptions about your code via the [`isolatedModules`](/tsconfig#isolatedModules) compiler flag.
-You can read more in the [3.8 release notes](https://devblogs.microsoft.com/typescript/announcing-typescript-3-8-beta/#type-only-imports-exports).
-
-With TypeScript 4.5, you can use a `type` modifier on individual named imports.
-
-```ts
-import { someFunc, type BaseType } from "./some-module.js";
-```
+* if you use some tool (_Example:_ Babel) -> use compiler flag's [`isolatedModules`](/packages/tsconfig-reference/copy/en/options/isolatedModules.md)
 
 ## Default exports
 
