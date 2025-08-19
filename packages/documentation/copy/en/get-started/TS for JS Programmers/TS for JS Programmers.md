@@ -6,135 +6,141 @@ permalink: /docs/handbook/typescript-in-5-minutes.html
 oneline: Learn how TypeScript extends JavaScript
 ---
 
-TypeScript stands in an unusual relationship to JavaScript. TypeScript offers all of JavaScript's features, and an additional layer on top of these: TypeScript's type system.
+* TypeScript
+  * 💡's features == JavaScript's features + TypeScript's type system💡
+    * JavaScript's features
+      * classes
+      * OOP
+    * -> working JS code -> working TS code
 
-For example, JavaScript provides language primitives like `string` and `number`, but it doesn't check that you've consistently assigned these. TypeScript does.
+* TypeScript's type system
+  * allows
+    * check types
+      * -> == lower bugs 
+    * [infer types](#ts-infers-types)
 
-This means that your existing working JavaScript code is also TypeScript code. The main benefit of TypeScript is that it can highlight unexpected behavior in your code, lowering the chance of bugs.
+## TS infers types
 
-This tutorial provides a brief overview of TypeScript, focusing on its type system.
-
-## Types by Inference
-
-TypeScript knows the JavaScript language and will generate types for you in many cases.
-For example in creating a variable and assigning it to a particular value, TypeScript will use the value as its type.
-
-```ts twoslash
-let helloWorld = "Hello World";
-//  ^?
-```
-
-By understanding how JavaScript works, TypeScript can build a type-system that accepts JavaScript code but has types. This offers a type-system without needing to add extra characters to make types explicit in your code. That's how TypeScript knows that `helloWorld` is a `string` in the above example.
-
-You may have written JavaScript in Visual Studio Code, and had editor auto-completion. Visual Studio Code uses TypeScript under the hood to make it easier to work with JavaScript.
+* infer types -- based on -- it's value
+* use cases
+  * create a variable
+  * assign a variable | particular value
 
 ## Defining Types
 
-You can use a wide variety of design patterns in JavaScript. However, some design patterns make it difficult for types to be inferred automatically (for example, patterns that use dynamic programming). To cover these cases, TypeScript supports an extension of the JavaScript language, which offers places for you to tell TypeScript what the types should be.
+### built-in
+* JS primitive types
+  * `boolean`,
+  * `bigint`,
+  * `null`,
+  * `number`,
+  * `string`,
+  * `symbol`,
+  * `undefined`
 
-For example, to create an object with an inferred type which includes `name: string` and `id: number`, you can write:
+* TS primitive types
+  * JS primitive types
+  * [`any`](#any)
+  * [`unknown`](#unknown)
+  * [`never`](#never)
+  * [`void`](#void)
 
-```ts twoslash
-const user = {
-  name: "Hayes",
-  id: 0,
-};
-```
+#### `any`
+* allow anything
 
-You can explicitly describe this object's shape using an `interface` declaration:
+#### `unknown`
+* 's uses
+  * can be wide
+  * _Example:_ wrap a JSON parser
+* === `any` + ⚠️enforce to check the type BEFORE using it ⚠️
+* [release notes](/packages/documentation/copy/en/release-notes/TypeScript%203.0.md#new-unknown-top-type)
+* [MORE](/packages/playground-examples/copy/en/TypeScript/Primitives/Unknown%20and%20Never.ts)
 
-```ts twoslash
-interface User {
-  name: string;
-  id: number;
-}
-```
+#### `never`
+* ❌this type can NOT happen❌
+  * ALTHOUGH you can pass -- around -- OTHER values
+* | union,
+  * AUTOMATICALLY removed
+    * Reason:🧠| runtime, impossible to assign `never`🧠
+* uses
+  * code flow analysis
+  * function / returns `never`, to handle
+    * JS runtime
+    * API consumers / NOT use types
+  * display better error messages
+  * close resources
+    * _Example:_ files or loops
+  * exhaustive switch
+* [MORE](/packages/playground-examples/copy/en/TypeScript/Primitives/Unknown%20and%20Never.ts) 
 
-You can then declare that a JavaScript object conforms to the shape of your new `interface` by using syntax like `: TypeName` after a variable declaration:
+#### `void`
+* uses
+  * function / 
+    * returns `undefined`
+    * NO return value
 
-```ts twoslash
-interface User {
-  name: string;
-  id: number;
-}
-// ---cut---
-const user: User = {
-  name: "Hayes",
-  id: 0,
-};
-```
+### custom
 
-If you provide an object that doesn't match the interface you have provided, TypeScript will warn you:
+* == syntaxes / build types
+* [_Example:_](/packages/playground-examples/copy/en/TypeScript/Language%20Extensions/Types%20vs%20Interfaces.ts)
 
-```ts twoslash
-// @errors: 2322
-interface User {
-  name: string;
-  id: number;
-}
+#### `interface`
 
-const user: User = {
-  username: "Hayes",
-  id: 0,
-};
-```
-
-Since JavaScript supports classes and object-oriented programming, so does TypeScript. You can use an interface declaration with classes:
-
-```ts twoslash
-interface User {
-  name: string;
-  id: number;
-}
-
-class UserAccount {
-  name: string;
-  id: number;
-
-  constructor(name: string, id: number) {
-    this.name = name;
-    this.id = id;
+* 
+  ```
+  interface InterfaceName {
+    key1: value1;
+    ...
   }
-}
+  ```
+* preferred
+* supports
+  * extension -- via -- `extends`
+    * | union type,
+      * ❌NOT ALLOWED❌
+* error messages
+  * rich
+* ALTHOUGH some interface's properties have default values -> ⚠️| initialize an object, you need to specify it⚠️
+* open
+  * == POSSIBLE to redeclare
+* uses
+  * object declaration
+  * classes
+  * function's
+    * arguments
+    * returned values
 
-const user: User = new UserAccount("Murphy", 1);
-```
-
-You can use interfaces to annotate parameters and return values to functions:
-
-```ts twoslash
-// @noErrors
-interface User {
-  name: string;
-  id: number;
-}
-// ---cut---
-function deleteUser(user: User) {
-  // ...
-}
-
-function getAdminUser(): User {
-  //...
-}
-```
-
-There is already a small set of primitive types available in JavaScript: `boolean`, `bigint`, `null`, `number`, `string`, `symbol`, and `undefined`, which you can use in an interface. TypeScript extends this list with a few more, such as `any` (allow anything), [`unknown`](/play#example/unknown-and-never) (ensure someone using this type declares what the type is), [`never`](/play#example/unknown-and-never) (it's not possible that this type could happen), and `void` (a function which returns `undefined` or has no return value).
-
-You'll see that there are two syntaxes for building types: [Interfaces and Types](/play/?e=83#example/types-vs-interfaces). You should prefer `interface`. Use `type` when you need specific features.
+#### `type`
+* supports
+  * extension -- via -- `&`
+* uses
+  * you need SPECIFIC features
+  * object declaration
+* ❌NOT uses❌
+  * classes
+* error messages
+  * poor
+* closed
+  * == ❌NOT possible to redeclare❌
 
 ## Composing Types
 
-With TypeScript, you can create complex types by combining simple ones. There are two popular ways to do so: with unions, and with generics.
+* TODO:
+With TypeScript, you can create complex types by combining simple ones
+* There are two popular ways to do so: with unions, and with generics.
 
 ### Unions
 
-With a union, you can declare that a type could be one of many types. For example, you can describe a `boolean` type as being either `true` or `false`:
+With a union, you can declare that a type could be one of many types
+* For example, you can describe a `boolean` type as being either `true` or `false`:
 
 ```ts twoslash
 type MyBool = true | false;
 ```
 
-_Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean`. That's a property of the Structural Type System. More on this below.
+_Note:_ If you hover over `MyBool` above, you'll see that it is classed as `boolean`
+* That's a property of the Structural Type System
+* More on this below.
 
 A popular use-case for union types is to describe the set of `string` or `number` [literals](/docs/handbook/2/everyday-types.html#literal-types) that a value is allowed to be:
 
@@ -144,7 +150,8 @@ type LockStates = "locked" | "unlocked";
 type PositiveOddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
 ```
 
-Unions provide a way to handle different types too. For example, you may have a function that takes an `array` or a `string`:
+Unions provide a way to handle different types too
+* For example, you may have a function that takes an `array` or a `string`:
 
 ```ts twoslash
 function getLength(obj: string | string[]) {

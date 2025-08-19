@@ -1,20 +1,7 @@
 
 
 # Defining types
-## built-in
-* Check 'definingtypesBuiltIn.ts'
-* JS types
-* `any`
-  * allow anything
-* `unknown`
-  * === `any` ⚠️ but enforce to check the type before to use it ⚠️
-* `never`
-  * impossible this type happens
-* `void`
-  * uses
-    * function which returns
-      * `undefined` or
-      * nothing returned
+
 ## custom
 * Check 'definingtypesCustom.ts'
 * via `interface`

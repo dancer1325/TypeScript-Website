@@ -5,8 +5,8 @@ interface User {
   id: number;
 }
 
-// 1.1 Valid for
-// 1.1.1 Object
+// 1.1 Uses
+// 1.1.1 object declaration
 //      Create an object based on this interface
 const userViaObject: User = {        // : User       is the key
   name: "Hayes",
@@ -28,12 +28,11 @@ class UserAccount {
 }
 const userViaClass: User = new UserAccount("Murphy", 1);
 
-// 1.2 Uses
-// 1.2.1 function's arguments
+// 1.1.3 function's arguments
 function deleteUser(user: User) {
   // ...
 }
-// 1.2.2 function's returned values
+// 1.1.4 function's returned values
 function getAdminUser(): User {
   return userViaClass;
 }
@@ -45,7 +44,7 @@ type UserType = {       // vs interface, here you use `=`
   name: string;
   id: number;
 }
-// 2.1 Valid for
+// 2.1 uses
 // 2.1.1 Object
 //      Create an object based on this interface
 const userViaType: UserType = {        // : UserType       is the key
