@@ -57,8 +57,12 @@ translatable: true
 
 ### Export statements
 
+* `export as ...`
+  * requirements
+    * TypeScript v3.8+
 * uses
   * exports / consumers can rename
+  * [re-export](#re-exports)
 
 ### Re-exports
 
@@ -104,104 +108,26 @@ translatable: true
 
 ## Default exports
 
-Each module can optionally export a `default` export.
-Default exports are marked with the keyword `default`; and there can only be one `default` export per module.
-`default` exports are imported using a different import form.
+* `export default ...`
+* / EACH module
+  * OPTIONAL
+  * ⚠️1!⚠️
+* ALLOWED entities -- to -- export
+  * class
+  * function
+  * variables
+  * ...
 
-`default` exports are really handy.
-For instance, a library like jQuery might have a default export of `jQuery` or `$`, which we'd probably also import under the name `$` or `jQuery`.
+### [JQuery.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/jquery/JQuery.d.ts)
 
-##### [JQuery.d.ts](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/jquery/JQuery.d.ts)
+* built-in default exports
+  * `jQuery`
+  * `$`
 
-```ts
-declare let $: JQuery;
-export default $;
-```
+## `export * as exportedField`
 
-##### App.ts
-
-```ts
-import $ from "jquery";
-
-$("button.continue").html("Next Step...");
-```
-
-Classes and function declarations can be authored directly as default exports.
-Default export class and function declaration names are optional.
-
-##### ZipCodeValidator.ts
-
-```ts
-export default class ZipCodeValidator {
-  static numberRegexp = /^[0-9]+$/;
-  isAcceptable(s: string) {
-    return s.length === 5 && ZipCodeValidator.numberRegexp.test(s);
-  }
-}
-```
-
-##### Test.ts
-
-```ts
-import validator from "./ZipCodeValidator";
-
-let myValidator = new validator();
-```
-
-or
-
-##### StaticZipCodeValidator.ts
-
-```ts
-const numberRegexp = /^[0-9]+$/;
-
-export default function (s: string) {
-  return s.length === 5 && numberRegexp.test(s);
-}
-```
-
-##### Test.ts
-
-```ts
-import validate from "./StaticZipCodeValidator";
-
-let strings = ["Hello", "98052", "101"];
-
-// Use function validate
-strings.forEach((s) => {
-  console.log(`"${s}" ${validate(s) ? "matches" : "does not match"}`);
-});
-```
-
-`default` exports can also be just values:
-
-##### OneTwoThree.ts
-
-```ts
-export default "123";
-```
-
-##### Log.ts
-
-```ts
-import num from "./OneTwoThree";
-
-console.log(num); // "123"
-```
-
-## Export all as x
-
-With TypeScript 3.8, you can use `export * as ns` as a shorthand for re-exporting another module with a name:
-
-```ts
-export * as utilities from "./utilities";
-```
-
-This takes all of the dependencies from a module and makes it an exported field, you could import it like this:
-
-```ts
-import { utilities } from "./index";
-```
+* allows
+  * ALL module's dependencies can be made an exported field
 
 ## `export =` and `import = require()`
 
