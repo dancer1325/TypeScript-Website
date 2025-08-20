@@ -131,204 +131,56 @@ translatable: true
 
 ## `export =` and `import = require()`
 
-Both CommonJS and AMD generally have the concept of an `exports` object which contains all exports from a module.
+* | CommonJS & AMD,
+  * `exports` 
+    * == object / 
+      * contains ALL exports -- from a -- module
+      * can be replaced -- with a -- 1! custom object
 
-They also support replacing the `exports` object with a custom single object.
-Default exports are meant to act as a replacement for this behavior; however, the two are incompatible.
-TypeScript supports `export =` to model the traditional CommonJS and AMD workflow.
-
-The `export =` syntax specifies a single object that is exported from the module.
-This can be a class, interface, namespace, function, or enum.
-
-
-##### ZipCodeValidator.ts
-
-```ts
-let numberRegexp = /^[0-9]+$/;
-class ZipCodeValidator {
-  isAcceptable(s: string) {
-    return s.length === 5 && numberRegexp.test(s);
-  }
-}
-export = ZipCodeValidator;
-```
-
-##### Test.ts
-
-```ts
-import zip = require("./ZipCodeValidator");
-
-// Some samples to try
-let strings = ["Hello", "98052", "101"];
-
-// Validators to use
-let validator = new zip();
-
-// Show whether each string passed each validator
-strings.forEach((s) => {
-  console.log(
-    `"${s}" - ${validator.isAcceptable(s) ? "matches" : "does not match"}`
-  );
-});
-```
+* | TypeScript,
+  * `export = 1!ObjectToExport` & `import customObjectToImport = require()`
+    * == traditional CommonJS and AMD workflow
+    * `1!ObjectToExport`
+      * can be
+        * class,
+        * interface,
+        * namespace,
+        * function,
+        * enum
 
 ## Code Generation for Modules
 
-Depending on the module target specified during compilation, the compiler will generate appropriate code for Node.js ([CommonJS](http://wiki.commonjs.org/wiki/CommonJS)), require.js ([AMD](https://github.com/amdjs/amdjs-api/wiki/AMD)), [UMD](https://github.com/umdjs/umd), [SystemJS](https://github.com/systemjs/systemjs), or [ECMAScript 2015 native modules](http://www.ecma-international.org/ecma-262/6.0/#sec-modules) (ES6) module-loading systems.
-For more information on what the `define`, `require` and `register` calls in the generated code do, consult the documentation for each module loader.
+* compiler will generate -- , based on module target | compilation, --  
+  * appropriate code for
+    * Node.js ([CommonJS](http://wiki.commonjs.org/wiki/CommonJS))
+    * require.js ([AMD](https://github.com/amdjs/amdjs-api/wiki/AMD)),
+    * [UMD](https://github.com/umdjs/umd),
+    * [SystemJS](https://github.com/systemjs/systemjs),
+    * [ECMAScript 2015 native modules](http://www.ecma-international.org/ecma-262/6.0/#sec-modules) (ES6) module-loading systems
+  * SEPARATE ".js"
 
-This simple example shows how the names used during importing and exporting get translated into the module loading code.
+* [here](/packages/tsconfig-reference/copy/en/options/module.md)
 
-##### SimpleModule.ts
+## `tsc --module moduleName`
 
-```ts
-import m = require("mod");
-export let t = m.something + 1;
-```
+* ALLOWED ones
+  * `tsc --module commonjs`
+    * -- for -- Node.js
+  * `tsc --module amd`
+    * -- for -- require.js
 
-##### AMD / RequireJS SimpleModule.js
+## Optional Module Loading & OTHER Advanced Loading Scenarios
 
-```js
-define(["require", "exports", "./mod"], function (require, exports, mod_1) {
-  exports.t = mod_1.something + 1;
-});
-```
+* use case
+  * | SOME conditions, load a module 
 
-##### CommonJS / Node SimpleModule.js
+* compiler
+  * 👀detects whether EACH module is used | emitted JavaScript👀
+  * if a module identifier is ONLY used as part of a type annotations & NEVER as an expression -> NO `require` call is emitted / that module ->
+    * performance optimization
+    * OPTIONAL loading of those modules
 
-```js
-var mod_1 = require("./mod");
-exports.t = mod_1.something + 1;
-```
-
-##### UMD SimpleModule.js
-
-```js
-(function (factory) {
-  if (typeof module === "object" && typeof module.exports === "object") {
-    var v = factory(require, exports);
-    if (v !== undefined) module.exports = v;
-  } else if (typeof define === "function" && define.amd) {
-    define(["require", "exports", "./mod"], factory);
-  }
-})(function (require, exports) {
-  var mod_1 = require("./mod");
-  exports.t = mod_1.something + 1;
-});
-```
-
-##### System SimpleModule.js
-
-```js
-System.register(["./mod"], function (exports_1) {
-  var mod_1;
-  var t;
-  return {
-    setters: [
-      function (mod_1_1) {
-        mod_1 = mod_1_1;
-      },
-    ],
-    execute: function () {
-      exports_1("t", (t = mod_1.something + 1));
-    },
-  };
-});
-```
-
-##### Native ECMAScript 2015 modules SimpleModule.js
-
-```js
-import { something } from "./mod";
-export var t = something + 1;
-```
-
-## Simple Example
-
-Below, we've consolidated the Validator implementations used in previous examples to only export a single named export from each module.
-
-To compile, we must specify a module target on the command line. For Node.js, use `--module commonjs`;
-for require.js, use `--module amd`. For example:
-
-```Shell
-tsc --module commonjs Test.ts
-```
-
-When compiled, each module will become a separate `.js` file.
-As with reference tags, the compiler will follow `import` statements to compile dependent files.
-
-##### Validation.ts
-
-```ts
-export interface StringValidator {
-  isAcceptable(s: string): boolean;
-}
-```
-
-##### LettersOnlyValidator.ts
-
-```ts
-import { StringValidator } from "./Validation";
-
-const lettersRegexp = /^[A-Za-z]+$/;
-
-export class LettersOnlyValidator implements StringValidator {
-  isAcceptable(s: string) {
-    return lettersRegexp.test(s);
-  }
-}
-```
-
-##### ZipCodeValidator.ts
-
-```ts
-import { StringValidator } from "./Validation";
-
-const numberRegexp = /^[0-9]+$/;
-
-export class ZipCodeValidator implements StringValidator {
-  isAcceptable(s: string) {
-    return s.length === 5 && numberRegexp.test(s);
-  }
-}
-```
-
-##### Test.ts
-
-```ts
-import { StringValidator } from "./Validation";
-import { ZipCodeValidator } from "./ZipCodeValidator";
-import { LettersOnlyValidator } from "./LettersOnlyValidator";
-
-// Some samples to try
-let strings = ["Hello", "98052", "101"];
-
-// Validators to use
-let validators: { [s: string]: StringValidator } = {};
-validators["ZIP code"] = new ZipCodeValidator();
-validators["Letters only"] = new LettersOnlyValidator();
-
-// Show whether each string passed each validator
-strings.forEach((s) => {
-  for (let name in validators) {
-    console.log(
-      `"${s}" - ${
-        validators[name].isAcceptable(s) ? "matches" : "does not match"
-      } ${name}`
-    );
-  }
-});
-```
-
-## Optional Module Loading and Other Advanced Loading Scenarios
-
-In some cases, you may want to only load a module under some conditions.
-In TypeScript, we can use the pattern shown below to implement this and other advanced loading scenarios to directly invoke the module loaders without losing type safety.
-
-The compiler detects whether each module is used in the emitted JavaScript.
-If a module identifier is only ever used as part of a type annotations and never as an expression, then no `require` call is emitted for that module.
-This elision of unused references is a good performance optimization, and also allows for optional loading of those modules.
-
+* TODO:
 The core idea of the pattern is that the `import id = require("...")` statement gives us access to the types exposed by the module.
 The module loader is invoked (through `require`) dynamically, as shown in the `if` blocks below.
 This leverages the reference-elision optimization so that the module is only loaded when needed.
