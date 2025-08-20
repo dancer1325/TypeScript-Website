@@ -10,3 +10,4 @@ oneline: "Allow imports to include TypeScript file extensions."
 * requirements
   * ⚠️enable `--noEmit` OR `--emitDeclarationOnly`⚠️
     * Reason:🧠these import paths would NOT be resolvable | runtime | ".js" output files🧠
+    * ONLY enable 1, ❌NOT BOTH❌
