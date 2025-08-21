@@ -7,141 +7,47 @@ preamble: >
   <p>Welcome to the first page of the handbook. If this is your first experience with TypeScript - you may want to start at one of the '<a href='https://www.typescriptlang.org/docs/handbook/intro.html#get-started'>Getting Started</a>' guides</a>
 ---
 
-* EVERY value | JavaScript has a set of behaviors (==methods) / 
-  * if we do NOT know the value of (`message` | _Example_ )  -> we can NOT know beforehand the output / line
-  * -- can be observed from -- running different operations
-    * _Example:_ 
-
-      ```js
-      // 1. access the property 'toLowerCase' | 'message' & 2. calling it
-      message.toLowerCase();
-        
-      // Call 'message' directly
-      message();
-      ```
-  * behavior of each operation -- depends entirely on the -- value & 👁️we must trust ALL it's as expected | JS 👁️
-    * typical questions to wonder | lines of code
-      * is the value callable?
-      * Does it indeed have the corresponding property?
-      * if it does, is the method even callable?
-      * if both of these values are callable, what do they return?
-    * if we make a mistake rethinking -> we get an exception
-      * _Example:_ 
-
-    ```js
-    const message = "Hello World!";
-    
-    // Running previous code -> we get TypeError: message is not a function
-    ```
-
-* TODO:
-When we run our code, the way that our JavaScript runtime chooses what to do is by figuring out the _type_ of the value - what sorts of behaviors and capabilities it has.
-
-
-For some values, such as the primitives `string` and `number`, we can identify their type at runtime using the `typeof` operator.
-But for other things like functions, there's no corresponding runtime mechanism to identify their types.
-For example, consider this function:
-
-```js
-function fn(x) {
-  return x.flip();
-}
-```
-
-We can _observe_ by reading the code that this function will only work if given an object with a callable `flip` property, but JavaScript doesn't surface this information in a way that we can check while the code is running.
-The only way in pure JavaScript to tell what `fn` does with a particular value is to call it and see what happens.
-This kind of behavior makes it hard to predict what the code will do before it runs, which means it's harder to know what your code is going to do while you're writing it.
-
-Seen in this way, a _type_ is the concept of describing which values can be passed to `fn` and which will crash.
-JavaScript only truly provides _dynamic_ typing - running the code to see what happens.
-
-* TODO: Check where to add
-* Reason: [ECMAScript specification](https://tc39.github.io/ecma262/)
-
-The alternative is to use a _static_ type system to make predictions about what code is expected _before_ it runs.
+* 👀JS'
+  * values' behaviors (==methods) 👀/ 
+    * ⚠️you ONLY know the POSSIBLE behaviors | runtime (== execute them)⚠️
+      * == ⭐️dynamic typing⭐️
+    * -- depends entirely on the -- value
+      * typical questions to wonder | lines of code
+        * is the value callable?
+        * Does it indeed have the corresponding property?
+        * if it does, is the method even callable?
+        * if both of these values are callable, what do they return?
+  * ways to identify values' type
+    * | primitives & functions,
+      * -- via -- `typeof`
+* type
+  * := values / can be passed -- to a -- function
 
 ## Static type-checking
 
 * TypeScript
-  * == static type-checker
-* _Static types systems_
-  * -- describe the -- shapes & behaviors | running our programs
-    * 👁️-> avoid errors | runtime 👁️
+  * == ⭐️static type-checker⭐️
 
-  ```ts twoslash
-  // @errors: 2349
-  const message = "hello!";
-  
-  message();
-  ```
+* static type system
+  * 👀ALTERNATIVE TO JS👀
+  * allows
+    * 👀BEFORE running a code, make predictions about the code's expectation👀
+      * -> | runtime, avoid errors
 
-## Non-exception Failures
+## Non-exception failures
 
-* == cases / NO errors | JS
-* if you try to access a property / does NOT exist | object -> 
-  * 👁 |(JS)   ️ returns the value `undefined` 👁️
-    * error thrown would have been expected
-    * _Example:_
+* == 👀cases / NO errors | JS👀
 
-    ```js
-    const user = {
-      name: "Daniel",
-      age: 26,
-    };
-  
-    user.location; // returns undefined
-    ```
+* access an object's property / NOT exist 
+  * | JS,
+    * returns `undefined` 
+  * | TS,
+    * throws an error 
 
-  * 👁 |(TS)   ️ throws an error 👁️
-    * _Example:_
-
-  ```ts twoslash
-  // @errors: 2339
-  const user = {
-    name: "Daniel",
-    age: 26,
-  };
-  
-  user.location;
-  ```
-
-* TS catch legitimate bugs
+* legitimate bugs / caught by Ts
   * typos
-
-  ```ts twoslash
-  // @noErrors
-  const announcement = "Hello World!";
-  
-  // How quickly can you spot the typos?
-  announcement.toLocaleLowercase();
-  announcement.toLocalLowerCase();
-  
-  // We probably meant to write this...
-  announcement.toLocaleLowerCase();
-  ```
-
   * uncalled functions
-
-  ```ts twoslash
-  // @noUnusedLocals
-  // @errors: 2365
-  function flipCoin() {
-    // Meant to be Math.random()
-    return Math.random < 0.5;
-  }
-  ```
-
   * basic logic errors
-
-  ```ts twoslash
-  // @errors: 2367
-  const value = Math.random() < 0.5 ? "a" : "b";
-  if (value !== "a") {
-    // ...
-  } else if (value === "b") {
-    // Oops, unreachable
-  }
-  ```
 
 ## Types for Tooling or Tooling | TS
 

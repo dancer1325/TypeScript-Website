@@ -1,12 +1,5 @@
-
-
-//                        -- static type-checking --
-// 1. error | compile time != runtime == previous to run the code
-const message = "hello!";
-//message();      // Uncomment to get the error
-
-// 2. cases /     undefined | JS   vs error | TS
-// 2.0
+// 1. cases /     undefined | JS   vs error | TS
+// 1.1 access an object's property / NOT exist
 const user = {
   name: "Daniel",
   age: 26,
@@ -14,9 +7,8 @@ const user = {
 
 // console.log("user.location ", user.location);   // user.location     throws an error
 
-// 2.1 legitimate bugs
-// 2.1.1 typos
-// @noErrors
+// 2. legitimate bugs / caught by Ts
+// 2.1 typos
 const announcement = "Hello World!";
 
 // How quickly can you spot the typos?  -- Uncomment to check the typo errors
@@ -26,8 +18,7 @@ announcement.toLocalLowerCase();*/
 // We probably meant to write this...
 announcement.toLocaleLowerCase();
 
-// 2.1.2 uncalled functions
-// @noUnusedLocals
+// 2.2 uncalled functions
 // @errors: 2365
 function flipCoin() {
   // Meant to be Math.random()
@@ -41,6 +32,7 @@ if (value !== "a") {
   // ...
 }
 /*
-else if (value === "b") {       -- Uncomment to check the typo errors
+else if (value === "b") {       -- Uncomment to check the basic logic error
   // Oops, unreachable
 }*/
+
