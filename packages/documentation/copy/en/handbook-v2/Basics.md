@@ -51,34 +51,16 @@ preamble: >
 
 ## Types for Tooling or Tooling | TS
 
-* == editor 
-  * can
+* == IDE 
+  * 's features
     * suggest code completion
     * highlight code error
-    * refactor to easily re-organize code
+    * refactor -- to -- easily re-organize code
     * navigation features
-    * 
   * vs static type-checking
-    * 👁️ DONE, after 👁️
-    * built on top of it
-  * _Example:_
-
-  <!-- prettier-ignore -->
-  ```ts twoslash
-  // @noErrors
-  // @esModuleInterop
-  import express from "express";
-  const app = express();
-  
-  app.get("/", function (req, res) {
-    res.sen
-  //       ^|   code completion while you are typing 
-  });
-  
-  app.listen(3000);
-  ```
-
-* [editors with TypeScript support](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support)
+    * 👁️ DONE, AFTER 👁️
+    * built | it
+  * [/ TypeScript support](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support)
 
 ## `tsc`, the TypeScript compiler
 
@@ -86,63 +68,56 @@ preamble: >
   * `npm install -g typescript`
     * install it globally
   * `npx tsc`
-    * got from a local `node_modules` package
-* `tsc fileName.ts`
+    * got -- from a -- local `node_modules` package
+* `tsc fileName.ts` or `tsc`
   * if there is NO error -> generate "fileName.js" / 
     * keep comments
     * indents consistently 
 
-## Emitting with Errors
+## if there are errors -> NO emit 
 
 * `tsc --noEmitOnError fileName.ts`
-  * if there is some error -> NO ".js" is generated
+  * ❌if there is some error -> NO generate ".js" ❌
   * uses
     * if you migrate a project | JS -> project | TS
       * Reason: 🧠 the project previously existed | JS -> it should NOT block it 🧠
-  * [`noEmitOnError`](/tsconfig#noEmitOnError)
+  * [`noEmitOnError`](/packages/tsconfig-reference/copy/en/options/noEmitOnError.md)
 
 ## Explicit Types
 
 * == specify _type_
-  * although, it can _infer_ types
+  * ALTHOUGH TS can infer types
 
 ## Erased Types
 
-* == removed types | compiling to JS
-  * Reason: 🧠 NOT part of JS 🧠
-  * -> NO change runtime behavior
-    * Reason: 🧠 JS is used | runtime & it has NOT types 🧠
+* 👀| compile to JS,
+  * types are removed👀  
+    * Reason: 🧠 NOT part of JS 🧠
+    * | runtime behavior, NO change
 
 ## Downleveling
 
-* := process of rewriting code from newer version of ECMAScript --to an -- older one
-  * target
-    * by default, it's ES3
-    * `--target`
-      * specify
-      * _Example:_ `tsc --target esXXX fileName.ts`
-* _Example:_
-  * template string exist in vECS6+
-    * _Example:_
-
-    ```ts
-    `Hello ${person}, today is ${date.toDateString()}!`;
-    ```
-
-    ```js
-    "Hello ".concat(person, ", today is ").concat(date.toDateString(), "!");
-    ```
-* ES2015 supported by majority of current browsers
+* := 💡process of rewriting code from newer version of ECMAScript -- to an -- older one💡
+  * ⭐️by specifying [`--target`](/packages/tsconfig-reference/copy/en/options/target.md)⭐️
 
 ## Strictness
 
 * == validate as you want
 * ways to set
-  * [`strict`](/tsconfig#strict) flag | CLI
-  * `"strict": true` in a [`tsconfig.json`](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
-* type-checking strictness flags
-  * [`noImplicitAny`](/tsconfig#noImplicitAny)
-  * [`strictNullChecks`](/tsconfig#strictNullChecks)
+  * | CLI
+    * `strict` 
+      * enable ALL strict mode family options
+    * specific type-checking strictness flags
+      * [`noImplicitAny`](/tsconfig#noImplicitAny)
+      * [`strictNullChecks`](/tsconfig#strictNullChecks)
+      * ...
+  * | "tsconfig.json"
+    * `"strict"` 
+      * enable ALL strict mode family options
+    * specific type-checking strictness flags
+      * [`noImplicitAny`](/tsconfig#noImplicitAny)
+      * [`strictNullChecks`](/tsconfig#strictNullChecks)
+      * ...
 
 ## `noImplicitAny`
 
