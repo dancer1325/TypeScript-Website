@@ -34,7 +34,6 @@ We'll learn more about the syntax `T<U>` when we cover _generics_.
 
 > Note that `[number]` is a different thing; refer to the section on [Tuples](/docs/handbook/2/objects.html#tuple-types).
 
-
 ## `any`
 
 TypeScript also has a special type, `any`, that you can use whenever you don't want a particular value to cause typechecking errors.
@@ -219,44 +218,15 @@ function printName(obj: { first: string; last?: string }) {
 
 ## Union Types
 
-TypeScript's type system allows you to build new types out of existing ones using a large variety of operators.
-Now that we know how to write a few types, it's time to start _combining_ them in interesting ways.
-
 ### Defining a Union Type
 
-The first way to combine types you might see is a _union_ type.
-A union type is a type formed from two or more other types, representing values that may be _any one_ of those types.
-We refer to each of these types as the union's _members_.
-
-Let's write a function that can operate on strings or numbers:
-
-```ts twoslash
-// @errors: 2345
-function printId(id: number | string) {
-  console.log("Your ID is: " + id);
-}
-// OK
-printId(101);
-// OK
-printId("202");
-// Error
-printId({ myID: 22342 });
-```
+* `unionMember1 | unionMember2 | …`
+  * if a type match any of the union's members -> valid for the union
 
 ### Working with Union Types
 
-It's easy to _provide_ a value matching a union type - simply provide a type matching any of the union's members.
-If you _have_ a value of a union type, how do you work with it?
-
-TypeScript will only allow an operation if it is valid for _every_ member of the union.
-For example, if you have the union `string | number`, you can't use methods that are only available on `string`:
-
-```ts twoslash
-// @errors: 2339
-function printId(id: number | string) {
-  console.log(id.toUpperCase());
-}
-```
+* ONLY if operation or method is valid for ALL unionMembers → valid for the union type
+* TODO:
 
 The solution is to _narrow_ the union with code, the same as you would in JavaScript without type annotations.
 _Narrowing_ occurs when TypeScript can deduce a more specific type for a value based on the structure of the code.
@@ -310,57 +280,61 @@ function getFirstThree(x: number[] | string) {
 
 ## Type Aliases
 
-We've been using object types and union types by writing them directly in type annotations.
-This is convenient, but it's common to want to use the same type more than once and refer to it by a single name.
+* _type alias_
+  * 👀== _name_ | ANY _type_ 👀
+    * ❌!= create different/distinct "versions" | SAME type ❌
+  * use cases
+    * union types / will be used SEVERAL times
+    * use DIFFERENT names | SAME type
+  * `type aliasName = ...`
+    * syntax
+  * _Examples:_
+    * _Example1:_ alias | object
 
-A _type alias_ is exactly that - a _name_ for any _type_.
-The syntax for a type alias is:
+      ```ts twoslash
+      type Point = {
+        x: number;
+        y: number;
+      };
+    
+      // Exactly the same as the earlier example
+      function printCoord(pt: Point) {
+        console.log("The coordinate's x value is " + pt.x);
+        console.log("The coordinate's y value is " + pt.y);
+      }
+    
+      printCoord({ x: 100, y: 100 });
+      ```
 
-```ts twoslash
-type Point = {
-  x: number;
-  y: number;
-};
+    * _Example2:_ alias | union type
 
-// Exactly the same as the earlier example
-function printCoord(pt: Point) {
-  console.log("The coordinate's x value is " + pt.x);
-  console.log("The coordinate's y value is " + pt.y);
-}
+    ```ts twoslash
+    type ID = number | string;
+    ```
+    * _Example3:_ SEVERAL alias | SAME type
 
-printCoord({ x: 100, y: 100 });
-```
-
-You can actually use a type alias to give a name to any type at all, not just an object type.
-For example, a type alias can name a union type:
-
-```ts twoslash
-type ID = number | string;
-```
-
-Note that aliases are _only_ aliases - you cannot use type aliases to create different/distinct "versions" of the same type.
-When you use the alias, it's exactly as if you had written the aliased type.
-In other words, this code might _look_ illegal, but is OK according to TypeScript because both types are aliases for the same type:
-
-```ts twoslash
-declare function getInput(): string;
-declare function sanitize(str: string): string;
-// ---cut---
-type UserInputSanitizedString = string;
-
-function sanitizeInput(str: string): UserInputSanitizedString {
-  return sanitize(str);
-}
-
-// Create a sanitized input
-let userInput = sanitizeInput(getInput());
-
-// Can still be re-assigned with a string though
-userInput = "new input";
-```
+    ```ts twoslash
+    declare function getInput(): string;
+    declare function sanitize(str: string): string;
+    
+    // type alias for string 
+    type UserInputSanitizedString = string;
+    
+    // string -- can be replaced by the -- alias
+    function sanitizeInput(str: string): UserInputSanitizedString {
+      return sanitize(str);
+    }
+    
+    // Create a sanitized input
+    let userInput = sanitizeInput(getInput());
+    
+    // Can still be re-assigned with a string though
+    userInput = "new input";
+    ```
 
 ## Interfaces
 
+* TODO:
 An _interface declaration_ is another way to name an object type:
 
 ```ts twoslash
@@ -463,46 +437,24 @@ You'll learn more about these concepts in later chapters, so don't worry if you 
 
 For the most part, you can choose based on personal preference, and TypeScript will tell you if it needs something to be the other kind of declaration. If you would like a heuristic, use `interface` until you need to use features from `type`.
 
-## Type Assertions
+## Type Assertions 
 
-Sometimes you will have information about the type of a value that TypeScript can't know about.
-
-For example, if you're using `document.getElementById`, TypeScript only knows that this will return _some_ kind of `HTMLElement`, but you might know that your page will always have an `HTMLCanvasElement` with a given ID.
-
-In this situation, you can use a _type assertion_ to specify a more specific type:
-
-```ts twoslash
-const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
-```
-
-Like a type annotation, type assertions are removed by the compiler and won't affect the runtime behavior of your code.
-
-You can also use the angle-bracket syntax (except if the code is in a `.tsx` file), which is equivalent:
-
-```ts twoslash
-const myCanvas = <HTMLCanvasElement>document.getElementById("main_canvas");
-```
-
-> Reminder: Because type assertions are removed at compile-time, there is no runtime checking associated with a type assertion.
-> There won't be an exception or `null` generated if the type assertion is wrong.
-
-TypeScript only allows type assertions which convert to a _more specific_ or _less specific_ version of a type.
-This rule prevents "impossible" coercions like:
-
-```ts twoslash
-// @errors: 2352
-const x = "hello" as number;
-```
-
-Sometimes this rule can be too conservative and will disallow more complex coercions that might be valid.
-If this happens, you can use two assertions, first to `any` (or `unknown`, which we'll introduce later), then to the desired type:
-
-```ts twoslash
-declare const expr: any;
-type T = { a: 1; b: 2; c: 3 };
-// ---cut---
-const a = (expr as any) as T;
-```
+* ways
+  * `... as concreteType`
+  * `<concreteType>...`
+    * ❌| ".tsx" NOT valid ❌
+* allows
+  * specifying MORE concrete type / 
+    * ⚠️if 2 types are COMPLETELY incompatible -> error | compile time ⚠️ 
+      * OTHERWISE, error | runtime
+    * 👀too conservative -> cast `any` or `unknown` + cast `desiredType` 👀
+* use cases
+  * you know value's type / TypeScript can NOT know  
+* how is it used under the hood?
+  * | compile-time, type assertions are removed 
+    * Reason: 🧠JS does NOT get about types 🧠
+    * == type annotation
+    * -> 👀NOT affect | runtime 👀
 
 ## Literal Types
 

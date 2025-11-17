@@ -5,7 +5,7 @@ function printId(id: number | string) {     // number | string
 
 printId(101);
 printId("202");
-// printId({ myID: 22342 });    // If you try to pass another -> Error -- Uncomment this line
+// printId({ myID: 22342 });    // If you try to pass another type, as an object -> Error -- Uncomment this line
 
 
 

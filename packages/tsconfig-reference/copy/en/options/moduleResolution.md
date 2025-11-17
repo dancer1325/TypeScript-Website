@@ -10,4 +10,4 @@ Specify the module resolution strategy:
 - `'bundler'` for use with bundlers. Like `node16` and `nodenext`, this mode supports package.json `"imports"` and `"exports"`, but unlike the Node.js resolution modes, `bundler` never requires file extensions on relative paths in imports.
 - `'classic'` was used in TypeScript before the release of 1.6. `classic` should not be used.
 
-There is a handbook reference page on [Module Resolution](/docs/handbook/module-resolution.html)
+* see [Module Resolution](/packages/documentation/copy/en/reference/Module%20Resolution.md)

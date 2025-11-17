@@ -1,4 +1,4 @@
-//  1. Pretty similar to create objects
+//  1. == create objects
 type BirdType = {
   wings: 2;
 };
@@ -12,12 +12,12 @@ const bird2: BirdInterface = { wings: 2 };
 
 
 
-// 2. Possible to intermix their use
+// 2. use cases / `interface` can be mixed -- with -- `type`
 const bird3: BirdInterface = bird1;
 
 
 
-// 3. Support being extended
+// 3. Support extension
 // 3.1 type       via     intersection type -- & --
 type Owl = { nocturnal: true } & BirdType;
 type Robin = { nocturnal: false } & BirdInterface;      // second member can be an interface, but the important is the 1@
@@ -35,16 +35,17 @@ interface Chicken extends BirdInterface {   // extends an interface
   flies: false;
 }
 
-// although some interface’s properties have default values & you want to create an object → NEED to specify it!!!
+// 3.3 ⚠️although some interface’s properties have default values & you want to create an object → NEED to specify it⚠️
 //let chicken: Chicken = { colourful: false, flies: false }; // uncomment this line to check
 let chicken: Chicken = { wings:2, colourful: false, flies: false };
 
-// NOT possible to extend an unionType
+// 3.4 | unionType, NOT possible to extend
 type mix = BirdType | Owl;
 /*interface another extends mix {       // -- uncomment this line to check
   colourful: true;
   flies: false;
 }*/
+
 
 // 4. Typescript gives better error messages for interface
 //    -> recommend it's use

@@ -4,186 +4,197 @@ layout: docs
 permalink: /docs/handbook/declaration-files/templates/module-d-ts.html
 ---
 
-## Comparing JavaScript to an example DTS
-
 ## Common CommonJS Patterns
 
-A module using CommonJS patterns uses `module.exports` to describe the exported values. For example, here is a module which exports a function and a numerical constant:
+* module / uses CommonJS patterns -> describe the exported values -- via -- `module.exports`
+  * _Example:_ module / exports a function & numerical constant
 
-```js
-const maxInterval = 12;
+    ```js
+    const maxInterval = 12;
+    
+    function getArrayLength(arr) {
+      return arr.length;
+    }
+    
+    module.exports = {
+      getArrayLength,
+      maxInterval,
+    };
+    ```
 
-function getArrayLength(arr) {
-  return arr.length;
-}
+    == -- via -- `.d.ts`
 
-module.exports = {
-  getArrayLength,
-  maxInterval,
-};
-```
+    ```.d.ts
+    export function getArrayLength(arr: any[]): number;
+    export const maxInterval: 12;
+    ```
 
-This can be described by the following `.d.ts`:
+* TypeScript playground 
+  * from ".ts" -> show the equivalent
+    * `.d.ts`
+    * `.js` 
+  * _Example:_ [playgroundExample](https://www.typescriptlang.org/play/?#code/PTAEHUFMBsGMHsC2lQBd5oBYoCoE8AHSAZVgCcBLA1UABWgEM8BzM+AVwDsATAGiwoBnUENANQAd0gAjQRVSQAUCEmYKsTKGYUAbpGF4OY0BoadYKdJMoL+gzAzIoz3UNEiPOofEVKVqAHSKymAAmkYI7NCuqGqcANag8ABmIjQUXrFOKBJMggBcISGgoAC0oACCbvCwDKgU8JkY7p7ehCTkVDQS2E6gnPCxGcwmZqDSTgzxxWWVoASMFmgYkAAeRJTInN3ymj4d-jSCeNsMq-wuoPaOltigAKoASgAywhK7SbGQZIIz5VWCFzSeCrZagNYbChbHaxUDcCjJZLfSDbExIAgUdxkUBIursJzCFJtXydajBBCcQQ0MwAUVWDEQC0gADVHBQGNJ3KAALygABEAAkYNAMOB4GRonzFBTBPB3AERcwABS0+mM9ysygc9wASmCKhwzQ8ZC8iHFzmB7BoXzcZmY7AYzEg-Fg0HUiQ58D0Ii8fLpDKZgj5SWxfPADlQAHJhAA5SASPlBFQAeS+ZHegmdWkgR1QjgUrmkeFATjNOmGWH0KAQiGhwkuNok4uiIgMHGxCyYrA4PCCJSAA)
 
-```ts
-export function getArrayLength(arr: any[]): number;
-export const maxInterval: 12;
-```
+* `.d.ts`
+  * syntax 
+    * == [ES Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) syntax
+  * if you run `tsc fileName.d.ts` -> NOTHING generated
+  * vs ES Modules
+    * 👀recommended to use ES Modules 👀
+      * Reason: 🧠was ratified by TC39 in 2015 | ES2015 (ES6) 🧠
+    * historically used `.d.ts` -- by -- transpilers
+  * JS codebase / use ES Modules -> has a `.d.ts` equivalent
+    * TODO: Commands to run?
+      * Attempt1: `tsc --declaration --emitDeclarationOnly --outDir types module.js`
+    * _Example:_ 
 
-The TypeScript playground can show you the `.d.ts` equivalent for JavaScript code. You can [try it yourself here](/play?useJavaScript=true#code/GYVwdgxgLglg9mABAcwKZQIICcsEMCeAMqmMlABYAUuOAlIgN6IBQiiW6IWSNWAdABsSZcswC+zCAgDOURAFtcADwAq5GKUQBeRAEYATM2by4AExBC+qJQAc4WKNO2NWKdNjxFhFADSvFquqk4sxAA).
+    ```js
+    export function getArrayLength(arr) {
+      return arr.length;
+    }
+    ```
+    ==
 
-The `.d.ts` syntax intentionally looks like [ES Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) syntax.
-ES Modules was ratified by TC39 in 2015 as part of ES2015 (ES6), while it has been available via transpilers for a long time, however if you have a JavaScript codebase using ES Modules:
-
-```js
-export function getArrayLength(arr) {
-  return arr.length;
-}
-```
-
-This would have the following `.d.ts` equivalent:
-
-```ts
-export function getArrayLength(arr: any[]): number;
-```
+    ```.d.ts
+    export function getArrayLength(arr: any[]): number;
+    ```
 
 ### Default Exports
 
-In CommonJS you can export any value as the default export, for example here is a regular expression module:
+* | CommonJS, you can use `export default` | ".d.ts"
+  * requirements
+    * [`esModuleInterop: true`](/tsconfig#esModuleInterop)
+      * otherwise -> use `export=`
+        * _Example:_ 
+        
+        ```.d.ts
+        declare function getArrayLength(arr: any[]): number;
+        declare namespace getArrayLength {
+        declare const maxInterval: 12;
+        }
+        export = getArrayLength;
+        ```
+  * allowed |
+    * any value
+      * _Examples:_
+        * _Example1:_ regular expression module
 
-```js
-module.exports = /hello( world)?/;
-```
+          ```js
+          module.exports = /hello( world)?/;
+          ```
+          == 
+          ```.d.ts
+          declare const helloWorld: RegExp;
+          export default helloWorld;
+          ```
+        * _Example2:_ number
 
-Which can be described by the following .d.ts:
-
-```ts
-declare const helloWorld: RegExp;
-export default helloWorld;
-```
-
-Or a number:
-
-```js
-module.exports = 3.142;
-```
-
-```ts
-declare const pi: number;
-export default pi;
-```
-
-One style of exporting in CommonJS is to export a function.
-Because a function is also an object, then extra fields can be added and are included in the export.
-
-```js
-function getArrayLength(arr) {
-  return arr.length;
-}
-getArrayLength.maxInterval = 12;
-
-module.exports = getArrayLength;
-```
-
-Which can be described with:
-
-```ts
-export default function getArrayLength(arr: any[]): number;
-export const maxInterval: 12;
-```
-
-Note that using `export default` in your .d.ts files requires [`esModuleInterop: true`](/tsconfig#esModuleInterop) to work.
-If you can't have `esModuleInterop: true` in your project, such as when you're submitting a PR to Definitely Typed, you'll have to use the `export=` syntax instead. This older syntax is harder to use but works everywhere.
-Here's how the above example would have to be written using `export=`:
-
-```ts
-declare function getArrayLength(arr: any[]): number;
-declare namespace getArrayLength {
-  declare const maxInterval: 12;
-}
-
-export = getArrayLength;
-```
-
-See [Module: Functions](/docs/handbook/declaration-files/templates/module-function-d-ts.html) for details of how that works, and the [Modules reference](/docs/handbook/modules.html) page.
+          ```js
+          module.exports = 3.142;
+          ```
+          ==  
+          ```.d.ts
+          declare const pi: number;
+          export default pi;
+          ```
+    * function
+      * == style of exporting
+      * extra fields can be added & are | export
+        * Reason: 🧠a function is ALSO an object 🧠
+      * _Example:_
+      ```js
+      function getArrayLength(arr) {
+        return arr.length;
+      }
+      getArrayLength.maxInterval = 12;    // add extra fields
+    
+      module.exports = getArrayLength;
+      ```
+      ==
+      ```.d.ts
+      export default function getArrayLength(arr: any[]): number;
+      export const maxInterval: 12;
+      ```
+* see
+  * [Module: Functions](/docs/handbook/declaration-files/templates/module-function-d-ts.html)
+  * [Modules reference](/docs/handbook/modules.html)
 
 ## Handling Many Consuming Import
 
-There are many ways to import a module in modern consuming code:
+* There are MANY ways (`require`, `from`, ...) to import a module | modern consuming code
+  * _Example:_ 
 
-```ts
-const fastify = require("fastify");
-const { fastify } = require("fastify");
-import fastify = require("fastify");
-import * as Fastify from "fastify";
-import { fastify, FastifyInstance } from "fastify";
-import fastify from "fastify";
-import fastify, { FastifyInstance } from "fastify";
-```
+  ```ts
+  const fastify = require("fastify");
+  const { fastify } = require("fastify");
+  import fastify = require("fastify");
+  import * as Fastify from "fastify";
+  import { fastify, FastifyInstance } from "fastify";
+  import fastify from "fastify";
+  import fastify, { FastifyInstance } from "fastify";
+  ```
 
-Covering all of these cases requires the JavaScript code to actually support all of these patterns.
-To support many of these patterns, a CommonJS module would need to look something like:
+  * requirements
+    * JavaScript code support ALL of these patterns
+      * _Example:_ CommonJS module / support MANY of these patterns
 
-```js
-class FastifyInstance {}
-
-function fastify() {
-  return new FastifyInstance();
-}
-
-fastify.FastifyInstance = FastifyInstance;
-
-// Allows for { fastify }
-fastify.fastify = fastify;
-// Allows for strict ES Module support
-fastify.default = fastify;
-// Sets the default export
-module.exports = fastify;
-```
+        ```js
+        class FastifyInstance {}
+        
+        function fastify() {
+          return new FastifyInstance();
+        }
+        
+        fastify.FastifyInstance = FastifyInstance;
+        
+        // Allows for { fastify }
+        fastify.fastify = fastify;
+        // Allows for strict ES Module support
+        fastify.default = fastify;
+        // Sets the default export
+        module.exports = fastify;
+        ```
 
 ## Types in Modules
 
-You may want to provide a type for JavaScript code which does not exist
+* use cases
+  * type SOMETHING / you want to export
+    * -> those types can then be re-used -- , via `import` or `import type` | TS code or [JSDoc imports](/docs/handbook/jsdoc-supported-types.html#import-types), by -- consumers of the modules 
+    * _Example:_ | JavaScript, typing does NOT exist
 
-```js
-function getArrayMetadata(arr) {
-  return {
-    length: getArrayLength(arr),
-    firstObject: arr[0],
-  };
-}
+      ```js
+      function getArrayMetadata(arr) {
+        return {
+          length: getArrayLength(arr),
+          firstObject: arr[0],
+        };
+      }
+      
+      module.exports = {
+        getArrayMetadata,
+      };
+      ```
+      ==, BUT typing | TS
 
-module.exports = {
-  getArrayMetadata,
-};
-```
+      ```ts
+      export type ArrayMetadata = {
+        length: number;
+        firstObject: any | undefined;
+      };
+      export function getArrayMetadata(arr: any[]): ArrayMetadata;
+      ```
+      ==, BUT [using generics](/docs/handbook/generics.html#generic-types) | TS
 
-This can be described with:
-
-```ts
-export type ArrayMetadata = {
-  length: number;
-  firstObject: any | undefined;
-};
-export function getArrayMetadata(arr: any[]): ArrayMetadata;
-```
-
-This example is a good case for [using generics](/docs/handbook/generics.html#generic-types) to provide richer type information:
-
-```ts
-export type ArrayMetadata<ArrType> = {
-  length: number;
-  firstObject: ArrType | undefined;
-};
-
-export function getArrayMetadata<ArrType>(
-  arr: ArrType[]
-): ArrayMetadata<ArrType>;
-```
-
-Now the type of the array propagates into the `ArrayMetadata` type.
-
-The types which are exported can then be re-used by consumers of the modules using either `import` or `import type` in TypeScript code or [JSDoc imports](/docs/handbook/jsdoc-supported-types.html#import-types).
+      ```ts
+      export type ArrayMetadata<ArrType> = {
+        length: number;
+        firstObject: ArrType | undefined;
+      };
+      
+      export function getArrayMetadata<ArrType>(
+        arr: ArrType[]
+      ): ArrayMetadata<ArrType>;
+      ```
 
 ### Namespaces in Module Code
 
@@ -225,78 +236,82 @@ export as namespace moduleName;
 
 ## Reference Example
 
-To give you an idea of how all these pieces can come together, here is a reference `.d.ts` to start with when making a new module
+* goal
+  * gather ALL pieces together
 
-```ts
-// Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
-// Project: [~THE PROJECT NAME~]
-// Definitions by: [~YOUR NAME~] <[~A URL FOR YOU~]>
+* reference example
+  * uses
+    * starting point -- to make a -- NEW module
 
-/*~ This is the module template file. You should rename it to index.d.ts
- *~ and place it in a folder with the same name as the module.
- *~ For example, if you were writing a file for "super-greeter", this
- *~ file should be 'super-greeter/index.d.ts'
- */
+  ```.d.ts
+  // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
+  // Project: [~THE PROJECT NAME~]
+  // Definitions by: [~YOUR NAME~] <[~A URL FOR YOU~]>
+  
+  /*~ This is the module template file. You should rename it to index.d.ts
+   *~ and place it in a folder with the same name as the module.
+   *~ For example, if you were writing a file for "super-greeter", this
+   *~ file should be 'super-greeter/index.d.ts'
+   */
+  
+  /*~ If this module is a UMD module that exposes a global variable 'myLib' when
+   *~ loaded outside a module loader environment, declare that global here.
+   *~ Otherwise, delete this declaration.
+   */
+  export as namespace myLib;
+  
+  /*~ If this module exports functions, declare them like so.
+   */
+  export function myFunction(a: string): string;
+  export function myOtherFunction(a: number): number;
+  
+  /*~ You can declare types that are available via importing the module */
+  export interface SomeType {
+    name: string;
+    length: number;
+    extras?: string[];
+  }
+  
+  /*~ You can declare properties of the module using const, let, or var */
+  export const myField: number;
+  ```
 
-/*~ If this module is a UMD module that exposes a global variable 'myLib' when
- *~ loaded outside a module loader environment, declare that global here.
- *~ Otherwise, delete this declaration.
- */
-export as namespace myLib;
+### Example1: Library file layout
 
-/*~ If this module exports functions, declare them like so.
- */
-export function myFunction(a: string): string;
-export function myOtherFunction(a: number): number;
+* library / == MULTIPLE modules
 
-/*~ You can declare types that are available via importing the module */
-export interface SomeType {
-  name: string;
-  length: number;
-  extras?: string[];
-}
+  ```
+  myLib
+    +---- index.js
+    +---- foo.js
+    +---- bar
+           +---- index.js
+           +---- baz.js
+  ```
 
-/*~ You can declare properties of the module using const, let, or var */
-export const myField: number;
-```
+  * -> can be imported as
 
-### Library file layout
+  ```js
+  var a = require("myLib");
+  var b = require("myLib/foo");
+  var c = require("myLib/bar");
+  var d = require("myLib/bar/baz");
+  ```
 
-The layout of your declaration files should mirror the layout of the library.
+    * -> declaration files should be
 
-A library can consist of multiple modules, such as
-
-```
-myLib
-  +---- index.js
-  +---- foo.js
-  +---- bar
-         +---- index.js
-         +---- baz.js
-```
-
-These could be imported as
-
-```js
-var a = require("myLib");
-var b = require("myLib/foo");
-var c = require("myLib/bar");
-var d = require("myLib/bar/baz");
-```
-
-Your declaration files should thus be
-
-```
-@types/myLib
-  +---- index.d.ts
-  +---- foo.d.ts
-  +---- bar
-         +---- index.d.ts
-         +---- baz.d.ts
-```
+      ```
+      @types/myLib
+        +---- index.d.ts
+        +---- foo.d.ts
+        +---- bar
+               +---- index.d.ts
+               +---- baz.d.ts
+      ```
 
 ### Testing your types
 
+* TODO:
 If you are planning on submitting these changes to DefinitelyTyped for everyone to also use, then we recommend you:
 
 > 1. Create a new folder in `node_modules/@types/[libname]`

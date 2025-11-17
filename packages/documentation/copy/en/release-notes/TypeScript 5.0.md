@@ -430,90 +430,73 @@ fnGood(arr);
 
 ## Supporting Multiple Configuration Files in `extends`
 
-When managing multiple projects, it can be helpful to have a "base" configuration file that other `tsconfig.json` files can extend from.
-That's why TypeScript supports an `extends` field for copying over fields from `compilerOptions`.
+* uses
+  * multiple projects -> helpful to have a "base" TS configuration file / other `tsconfig.json` files -- can extend -- from
 
-```jsonc
-// packages/front-end/src/tsconfig.json
-{
-    "extends": "../../../tsconfig.base.json",
-    "compilerOptions": {
-        "outDir": "../lib",
-        // ...
+    ```jsonc
+    // packages/front-end/src/tsconfig.json
+    {
+        "extends": "../../../tsconfig.base.json",
+        "compilerOptions": {
+            "outDir": "../lib",
+            // ...
+        }
     }
-}
-```
+    ```
+  * extend from multiple configuration files
+    * _Example:_ ALL your projects use the options from the `@tsconfig/strictest` ([link](https://github.com/tsconfig/bases/blob/main/bases/strictest.json)) -> create one / extends from it
 
-However, there are scenarios where you might want to extend from multiple configuration files.
-For example, imagine using [a TypeScript base configuration file shipped to npm](https://github.com/tsconfig/bases).
-If you want all your projects to also use the options from the `@tsconfig/strictest` package on npm, then there's a simple solution: have `tsconfig.base.json` extend from `@tsconfig/strictest`:
-
-```jsonc
-// tsconfig.base.json
-{
-    "extends": "@tsconfig/strictest/tsconfig.json",
-    "compilerOptions": {
-        // ...
+    ```jsonc
+    // tsconfig.base.json
+    {
+        "extends": "@tsconfig/strictest/tsconfig.json", 
+        "compilerOptions": {
+            // ...
+        }
     }
-}
-```
+    ```
+  
+    * transitive extension / 👁️ latter entry overrides 👁️  
 
-This works to a point.
-If you have any projects that *don't* want to use `@tsconfig/strictest`, they have to either manually disable the options, or create a separate version of `tsconfig.base.json` that *doesn't* extend from `@tsconfig/strictest`.
+      ```jsonc
+      // tsconfig1.json
+      {
+          "compilerOptions": {
+              "strictNullChecks": true
+          }
+      }
+    
+      // tsconfig2.json
+      {
+          "compilerOptions": {
+              "noImplicitAny": true
+          }
+      }
+    
+      // tsconfig.json
+      {
+          "extends": ["./tsconfig1.json", "./tsconfig2.json"],      // -> `strictNullChecks` & `noImplicitAny` are enabled
+          "files": ["./index.ts"]
+      }
+      ```
 
-To give some more flexibility here, Typescript 5.0 now allows the `extends` field to take multiple entries.
-For example, in this configuration file:
+* `extends`
+  * field / 
+    * `["tsConfig1","tsConfig2",...]`
+      * == multiple entries are available
 
-```jsonc
-{
-    "extends": ["a", "b", "c"],
-    "compilerOptions": {
-        // ...
+    ```jsonc
+    {
+        "extends": ["a", "b", "c"],
+        "compilerOptions": {
+            // ...
+        }
     }
-}
-```
+    ```
 
-Writing this is kind of like extending `c` directly, where `c` extends `b`, and `b` extends `a`.
-If any fields "conflict", the latter entry wins.
+    * -- copy over fields from -- `compilerOptions`
 
-So in the following example, both `strictNullChecks` and `noImplicitAny` are enabled in the final `tsconfig.json`.
-
-```jsonc
-// tsconfig1.json
-{
-    "compilerOptions": {
-        "strictNullChecks": true
-    }
-}
-
-// tsconfig2.json
-{
-    "compilerOptions": {
-        "noImplicitAny": true
-    }
-}
-
-// tsconfig.json
-{
-    "extends": ["./tsconfig1.json", "./tsconfig2.json"],
-    "files": ["./index.ts"]
-}
-```
-
-As another example, we can rewrite our original example in the following way.
-
-```jsonc
-// packages/front-end/src/tsconfig.json
-{
-    "extends": ["@tsconfig/strictest/tsconfig.json", "../../../tsconfig.base.json"],
-    "compilerOptions": {
-        "outDir": "../lib",
-        // ...
-    }
-}
-```
-
-For more details, [read more on the original pull request](https://github.com/microsoft/TypeScript/pull/50403).
+* check [original pull request](https://github.com/microsoft/TypeScript/pull/50403)
 
 <!--
 

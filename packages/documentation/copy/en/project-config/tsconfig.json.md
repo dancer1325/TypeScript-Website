@@ -8,22 +8,31 @@ translatable: true
 
 ## Overview
 
-The presence of a `tsconfig.json` file in a directory indicates that the directory is the root of a TypeScript project.
-The `tsconfig.json` file specifies the root files and the compiler options required to compile the project.
-
-JavaScript projects can use a `jsconfig.json` file instead, which acts almost the same but has some JavaScript-related compiler flags enabled by default.
-
-A project is compiled in one of the following ways:
+* ways to compile the project
+  * `tsconfig.json`
+  * `jsconfig.json`
+* `tsconfig.json`
+  * if there is a `tsconfig.json` file | directory -> directory == root of a TypeScript project
+  * specifies about compiling the project, the
+    * root files
+    * compiler options
+  * vs `jsconfig.json`
+    * uses
+      * JavaScript projects
+    * == + JavaScript-related compiler flags / enabled by default
 
 ## Using `tsconfig.json` or `jsconfig.json`
 
-- By invoking tsc with no input files, in which case the compiler searches for the `tsconfig.json` file starting in the current directory and continuing up the parent directory chain.
-- By invoking tsc with no input files and a `--project` (or just `-p`) command line option that specifies the path of a directory containing a `tsconfig.json` file, or a path to a valid `.json` file containing the configurations.
-
-When input files are specified on the command line, `tsconfig.json` files are ignored.
+* if you invoke `tsc` / NO input files 
+  * -> compiler searches for the `tsconfig.json` | 
+    * current directory
+    * up the parent directory chain
+  * & `--project pathOfADirectoryContainingOrPassingDirectlyTsConfig` or `-p pathOfADirectoryContainingOrPassingDirectlyTsConfig` -> 
+    * search ONLY | `pathOfADirectoryContainingTsConfig`
+    * if it's specified the `tsconfig.json` -> default `tsconfig.json` files are ignored
 
 ## Examples
-
+* TODO:
 Example `tsconfig.json` files:
 
 - Using the [`files`](/tsconfig#files) property
@@ -96,12 +105,14 @@ This lets your `tsconfig.json` focus on the unique choices for your project, and
 
 ## Details
 
-The `"compilerOptions"` property can be omitted, in which case the compiler's defaults are used. See our full list of supported [Compiler Options](/tsconfig).
+* `"compilerOptions"` property
+  * if you omit it -> compiler's defaults are used
+  * check [Compiler Options](/tsconfig)
 
 ## TSConfig Reference
 
-To learn more about the hundreds of configuration options in the [TSConfig Reference](/tsconfig).
+* check [TSConfig Reference](/tsconfig)
 
 ## Schema
 
-The `tsconfig.json` Schema can be found at [the JSON Schema Store](http://json.schemastore.org/tsconfig).
+* [`tsconfig.json` Schema](http://json.schemastore.org/tsconfig)

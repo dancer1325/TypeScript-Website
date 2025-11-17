@@ -888,8 +888,8 @@ This should facilitate using ES2015-based tree shakers like [rollup](https://git
 
 ## Trailing commas in function parameter and argument lists
 
-Trailing comma in function parameter and argument lists are now allowed.
-This is an implementation for a [Stage-3 ECMAScript proposal](https://jeffmo.github.io/es-trailing-function-commas/) that emits down to valid ES3/ES5/ES6.
+* Trailing comma | function parameter & argument lists, [Stage-3 ECMAScript proposal](https://github.com/tc39/proposal-trailing-function-commas) are NOW allowed
+  * -> valid ES3/ES5/ES6
 
 ##### Example
 

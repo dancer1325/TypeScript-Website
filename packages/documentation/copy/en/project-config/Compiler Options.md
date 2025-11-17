@@ -8,35 +8,39 @@ disable_toc: true
 
 ## Using the CLI
 
-Running `tsc` locally will compile the closest project defined by a `tsconfig.json`, or you can compile a set of TypeScript
-files by passing in a glob of files you want. When input files are specified on the command line, `tsconfig.json` files are
-ignored.
+* `tsc` compiles
+  * 👁️by default, closest project / -- defined by a -- `tsconfig.json` or
+  * set of TypeScript files -- via -- passing a glob of files
+    * -> default `tsconfig.json` files are ignored
 
+* _Example:_
 ```sh
-# Run a compile based on a backwards look through the fs for a tsconfig.json
+# Run a compile / look for a "tsconfig.json"
 tsc
 
-# Emit JS for just the index.ts with the compiler defaults
+# Emit JS for ONLY "index.ts" -- via -- default settings
 tsc index.ts
 
-# Emit JS for any .ts files in the folder src, with the default settings
+# Emit JS for ANY .ts files | src/   -- via -- default settings
 tsc src/*.ts
 
-# Emit files referenced in with the compiler settings from tsconfig.production.json
+# Emit files -- via -- compiler settings     tsconfig.production.json
 tsc --project tsconfig.production.json
 
-# Emit d.ts files for a js file with showing compiler options which are booleans
-tsc index.js --declaration --emitDeclarationOnly
+// TODO:
+# Emit "*.d.ts" file / .js file 
+# tsc index.js --declaration --emitDeclarationOnly        #     error TS6504
+tsc ./examples/index.js --declaration --emitDeclarationOnly --allowJs
 
-# Emit a single .js file from two files via compiler options which take string arguments
-tsc app.ts util.ts --target esnext --outfile index.js
+# Emit 1! .js file -- from -- 2 .ts files, -- via -- compiler options / take string arguments
+tsc app.ts util.ts --target esnext --outfile toone.js
 ```
 
 ## Compiler Options
 
 **If you're looking for more information about the compiler options in a tsconfig, check out the [TSConfig Reference](/tsconfig)**
 
-<!-- Start of replacement  --><h3>CLI Commands</h3>
+<!-- Start of replacement  --><h3 xmlns="http://www.w3.org/1999/html">CLI Commands</h3>
 <table class="cli-option" width="100%">
   <thead>
     <tr>
@@ -51,7 +55,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Show all compiler options.</p>
+<p>Show ALL compiler options</p>
 </td></tr>
 
 <tr class='even' name='generateTrace'>
@@ -105,7 +109,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Compile the project given the path to its configuration file, or to a folder with a 'tsconfig.json'.</p>
+<p>path to a configuration file, OR folder with a 'tsconfig.json'</p>
 </td></tr>
 
 <tr class='even' name='showConfig'>
@@ -114,7 +118,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Print the final configuration instead of building.</p>
+<p>Print the final configuration </br> != building </p>
 </td></tr>
 
 <tr class='odd' name='version'>
@@ -298,7 +302,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Allow JavaScript files to be a part of your program. Use the <code>checkJS</code> option to get errors from these files.</p>
+<p>Allow JavaScript files to be a part of your program </br> if you use <code>checkJS</code> option -> get errors -- from -- these files</p>
 </td></tr>
 
 <tr class='even' name='allowSyntheticDefaultImports'>
@@ -430,7 +434,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Generate .d.ts files from TypeScript and JavaScript files in your project.</p>
+<p>Generate "*.d.ts" files -- from -- TypeScript & JavaScript files | your project.</p>
 </td></tr>
 
 <tr class='even' name='declarationDir'>
@@ -540,7 +544,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Only output d.ts files and not JavaScript files.</p>
+<p>ONLY output "*.d.ts" files & NOT JavaScript files.</p>
 </td></tr>
 
 <tr class='even' name='emitDecoratorMetadata'>
@@ -558,11 +562,11 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#esModuleInterop'>--esModuleInterop</a></code></td>
   <td><p><code>boolean</code></p>
 </td>
-  <td><p><code>true</code> if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code>; <code>false</code> otherwise.</p>
+  <td><p>if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code> -> <code>true</code> <br> otherwise, <code>false</code></p>
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Emit additional JavaScript to ease support for importing CommonJS modules. This enables <a href="#allowSyntheticDefaultImports"><code>allowSyntheticDefaultImports</code></a> for type compatibility.</p>
+<p>Emit additional JavaScript / make easier importing CommonJS modules <br> enables <a href="#allowSyntheticDefaultImports"><code>allowSyntheticDefaultImports</code></a> -- for -- type compatibility</p>
 </td></tr>
 
 <tr class='even' name='exactOptionalPropertyTypes'>
@@ -833,11 +837,11 @@ tsc app.ts util.ts --target esnext --outfile index.js
   <td><code><a href='/tsconfig/#moduleResolution'>--moduleResolution</a></code></td>
   <td><p><code>classic</code>, <code>node10</code>/<code>node</code>, <code>node16</code>, <code>nodenext</code>, or <code>bundler</code></p>
 </td>
-  <td><p><code>Classic</code> if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code>, or <code>ES6</code>/<code>ES2015</code>; Matches if <a href="#module"><code>module</code></a> is <code>node16</code> or <code>nodenext</code>; <code>Node</code> otherwise.</p>
+  <td><p>if <a href="#module"><code>module</code></a> is <code>AMD</code>, <code>UMD</code>, <code>System</code>, or <code>ES6</code>/<code>ES2015</code> -> <code>Classic</code> <br> if <a href="#module"><code>module</code></a> == <code>node16</code> or <code>nodenext</code> -> <code>module</code> == <code>moduleResolution</code> <br> <code>Node</code>, otherwise</p>
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify how TypeScript looks up a file from a given module specifier.</p>
+<p>👀how TypeScript looks up a file | given module specifier👀</p>
 </td></tr>
 
 <tr class='odd' name='moduleSuffixes'>
@@ -870,7 +874,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Disable emitting files from a compilation.</p>
+<p>NO emit files | compilation.</p>
 </td></tr>
 
 <tr class='even' name='noEmitHelpers'>
@@ -892,7 +896,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Disable emitting files if any type checking errors are reported.</p>
+<p> if ANY type checking errors are reported -> NO emit files </p>
 </td></tr>
 
 <tr class='even' name='noErrorTruncation'>
@@ -1079,7 +1083,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description even"><td colspan="3">
-<p>Specify a file that bundles all outputs into one JavaScript file. If <a href="#declaration"><code>declaration</code></a> is true, also designates a file that bundles all .d.ts output.</p>
+<p> file / bundles ALL outputs | 1! JavaScript file </br> if <a href="#declaration"><code>declaration</code></a> is true -> 1 file / bundles ALL .d.ts output </p>
 </td></tr>
 
 <tr class='odd' name='paths'>
@@ -1376,7 +1380,7 @@ tsc app.ts util.ts --target esnext --outfile index.js
 </td>
 </tr>
 <tr class="option-description odd"><td colspan="3">
-<p>Set the JavaScript language version for emitted JavaScript and include compatible library declarations.</p>
+<p>JavaScript language version / emitted JavaScript</p>
 </td></tr>
 
 <tr class='even' name='traceResolution'>
@@ -1461,6 +1465,6 @@ tsc app.ts util.ts --target esnext --outfile index.js
 
 ## Related
 
-- Every option is fully explained in the [TSConfig Reference](/tsconfig).
-- Learn how to use a [`tsconfig.json`](/docs/handbook/tsconfig-json.html) files.
-- Learn how to work in an [MSBuild project](/docs/handbook/compiler-options-in-msbuild.html).
+- check every option | [TSConfig Reference](/tsconfig)
+- how to use a [`tsconfig.json`](/docs/handbook/tsconfig-json.html) files
+- how to work in an [MSBuild project](/docs/handbook/compiler-options-in-msbuild.html)

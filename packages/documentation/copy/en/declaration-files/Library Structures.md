@@ -5,74 +5,76 @@ permalink: /docs/handbook/declaration-files/library-structures.html
 oneline: How to structure your d.ts files
 ---
 
-Broadly speaking, the way you _structure_ your declaration file depends on how the library is consumed.
-There are many ways of offering a library for consumption in JavaScript, and you'll need to write your declaration file to match it.
-This guide covers how to identify common library patterns, and how to write declaration files which correspond to that pattern.
+* goal
+  * understand common library formats
+    * corresponding file | [Templates](Templates.md) / format
+  * how to write a proper declaration file / EACH format
+    * the format of the library -- influences the -- writing of the declaration file
 
-Each type of major library structuring pattern has a corresponding file in the [Templates](/docs/handbook/declaration-files/templates.html) section.
-You can start with these templates to help you get going faster.
+* _structure_ of your declaration file
+  * -- depends on -- how the library is consumed
+    * ways of offering a library for consumption | JavaScript
+      * MANY
+      * declaration file MUST be written / match it
 
-## Identifying Kinds of Libraries
+## Identifying Kinds of Libraries / declaration files can represent
 
-First, we'll review the kinds of libraries TypeScript declaration files can represent.
-We'll briefly show how each kind of library is _used_, how it is _written_, and list some example libraries from the real world.
+* goal
+  * how EACH kind of library is
+    * _used_,
+    * _written_,
+  * list real example libraries
 
-Identifying the structure of a library is the first step in writing its declaration file.
-We'll give hints on how to identify structure both based on its _usage_ and its _code_.
-Depending on the library's documentation and organization, one might be easier than the other.
-We recommend using whichever is more comfortable to you.
+* steps to write a declaration file
+  * identify the structure of a library
+    * based on its 
+      * usage or
+      * code
+  * TODO:
 
 ### What should you look for?
 
-Question to ask yourself while looking at a library you are trying to type.
-
-1. How do you obtain the library?
-
-   For example, can you _only_ get it through npm or only from a CDN?
-
-2. How would you import it?
-
-   Does it add a global object? Does it use `require` or `import`/`export` statements?
-
-### Smaller samples for different types of libraries
+* questions to wonder
+  1. How do you obtain the library?
+     1. _Example:_ can you ONLY get it -- through -- npm or from a CDN?
+  2. How would you import it?
+     1. Does it add a global object? Does it use `require` or `import`/`export` statements?
 
 ### Modular Libraries
 
-Almost every modern Node.js library falls into the module family.
-These type of libraries only work in a JS environment with a module loader.
-For example, `express` only works in Node.js and must be loaded using the CommonJS `require` function.
+* _Example:_ ALMOST EVERY modern Node.js library
+* where does it work?
+  * \+ module loader, ONLY | JS environment
+    * == _importing_ a _module_ | ECMAScript 2015 (== ES2015, ECMAScript 6, and ES6), CommonJS, or RequireJS
+      * _Examples:_
+        * _Example1:_ | JavaScript CommonJS (Node.js), you would write
 
-ECMAScript 2015 (also known as ES2015, ECMAScript 6, and ES6), CommonJS, and RequireJS have similar notions of _importing_ a _module_.
-In JavaScript CommonJS (Node.js), for example, you would write
+          ```js
+          var fs = require("fs");
+          ```
 
-```js
-var fs = require("fs");
-```
+        * _Example2:_ | TypeScript or ES6, use `import` keyword
 
-In TypeScript or ES6, the `import` keyword serves the same purpose:
+          ```ts
+          import * as fs from "fs";
+          ```
+    * _Examples of modular libraries:_
+      * _Example1:_ `express` ONLY works | Node.js / is loaded -- via -- CommonJS `require` function
+      * _Example2:_ 
 
-```ts
-import * as fs from "fs";
-```
+        ```js
+        var someLib = require("someLib");
+        
+        // or
+        define(..., ['someLib'], function(someLib) {
+        }); 
+        ```
 
-You'll typically see modular libraries include one of these lines in their documentation:
-
-```js
-var someLib = require("someLib");
-```
-
-or
-
-```js
-define(..., ['someLib'], function(someLib) {
-
-});
-```
-
-As with global modules, you might see these examples in the documentation of [a UMD](#umd) module, so be sure to check the code or documentation.
+* see [UMD](#_umd_)
 
 #### Identifying a Module Library from Code
 
+* TODO:
 Modular libraries will typically have at least some of the following:
 
 - Unconditional calls to `require` or `define`

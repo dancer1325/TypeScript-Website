@@ -6,28 +6,31 @@ oneline: How TypeScript resolves modules in JavaScript
 translatable: true
 ---
 
-> This section assumes some basic knowledge about modules.
-> Please see the [Modules](/docs/handbook/modules.html) documentation for more information.
+* requirements
+  * see [Modules](../handbook-v2/Modules.md)
 
-_Module resolution_ is the process the compiler uses to figure out what an import refers to.
-Consider an import statement like `import { a } from "moduleA"`;
-in order to check any use of `a`, the compiler needs to know exactly what it represents, and will need to check its definition `moduleA`.
-
-At this point, the compiler will ask "what's the shape of `moduleA`?"
-While this sounds straightforward, `moduleA` could be defined in one of your own `.ts`/`.tsx` files, or in a `.d.ts` that your code depends on.
-
-First, the compiler will try to locate a file that represents the imported module.
-To do so the compiler follows one of two different strategies: [Classic](#classic) or [Node](#node).
-These strategies tell the compiler _where_ to look for `moduleA`.
-
-If that didn't work and if the module name is non-relative (and in the case of `"moduleA"`, it is), then the compiler will attempt to locate an [ambient module declaration](/docs/handbook/modules.html#ambient-modules).
-We'll cover non-relative imports next.
-
-Finally, if the compiler could not resolve the module, it will log an error.
-In this case, the error would be something like `error TS2307: Cannot find module 'moduleA'.`
+* _Module resolution_
+  * := compiler's process 👀-- to figure out -- what an import refers to 👀
+    * steps
+      * compiler tries to locate a file / represents the imported module -- via -- 1! strategy
+        * strategies -- tell the compiler -- _WHERE_ to look for 
+        * allowed strategies
+          * [Classic](#classic)
+          * [Node](#node) 
+      * if previous step did NOT work & module name is NON-relative (_Example:_ `"moduleA"`) -> the compiler -- will try to locate an -- [ambient module declaration](Modules.md#ambient-modules)
+      * otherwise -> log an error -- `error TS2307: Cannot find module 'moduleA'.` -- 
+  * _Example:_
+   ```
+   import { a } from "moduleA"
+   // 1 compiler needs to know EXACTLY 
+   // 1.1 what it represents
+   // 1.2 definition of `moduleA` == ask the shape of `moduleA`
+   // 2. `moduleA` -- could be defined in -- `.ts` / `.tsx` / `.d.ts` 
+   ```
 
 ## Relative vs. Non-relative module imports
 
+* TODO:
 Module imports are resolved differently based on whether the module reference is relative or non-relative.
 
 A _relative import_ is one that starts with `/`, `./` or `../`.
@@ -52,12 +55,11 @@ Use non-relative paths when importing any of your external dependencies.
 
 ## Module Resolution Strategies
 
-There are two possible module resolution strategies: [Node](#node) and [Classic](#classic).
-You can use the [`moduleResolution`](/tsconfig#moduleResolution) option to specify the module resolution strategy.
-If not specified, the default is [Node](#node) for `--module commonjs`, and [Classic](#classic) otherwise (including when [`module`](/tsconfig#module) is set to `amd`, `system`, `umd`, `es2015`, `esnext`, etc.).
-
-> Note: `node` module resolution is the most-commonly used in the TypeScript community and is recommended for most projects.
-> If you are having resolution problems with `import`s and `export`s in TypeScript, try setting `moduleResolution: "node"` to see if it fixes the issue.
+* [`moduleResolution`](../project-config/Compiler%20Options.md#moduleResolution) - `--module` -
+  * option -- to specify the -- module resolution strategy
+  * if `--module` NOT specified -> the default is [Node](#node) + `--module commonjs`
+  * INDEPENDENTLY of [`module`](../project-config/Compiler%20Options.md#module) value set -> [Classic](#classic)
+    * allowed values: `amd`, `system`, `umd`, `es2015`, `esnext`, etc.
 
 ### Classic
 

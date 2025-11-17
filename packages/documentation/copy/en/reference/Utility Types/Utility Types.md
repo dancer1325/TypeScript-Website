@@ -128,34 +128,12 @@ function freeze<Type>(obj: Type): Readonly<Type>;
 
 ## `Record<Keys, Type>`
 
-<blockquote class=bg-reading>
-
-Released:  
-[2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
-
-</blockquote>
-
-Constructs an object type whose property keys are `Keys` and whose property values are `Type`. This utility can be used to map the properties of a type to another type.
-
-##### Example
-
-```ts twoslash
-interface CatInfo {
-  age: number;
-  breed: string;
-}
-
-type CatName = "miffy" | "boris" | "mordred";
-
-const cats: Record<CatName, CatInfo> = {
-  miffy: { age: 10, breed: "Persian" },
-  boris: { age: 5, breed: "Maine Coon" },
-  mordred: { age: 16, breed: "British Shorthair" },
-};
-
-cats.boris;
-// ^?
-```
+* [v2.1](/docs/handbook/release-notes/typescript-2-1.html#partial-readonly-record-and-pick)
+* constructs an object type /
+  * `Keys` == property keys 
+  * `Type` == property values 
+* uses
+  * map the properties of a type -- to -- ANOTHER type
 
 ## `Pick<Type, Keys>`
 

@@ -1,6 +1,7 @@
 
 //                                                        Defining types
 //                == JS types + any + unknown + never + void
+// 1. any
 let anyType: any;
 anyType = 1;
 // @ts-ignore       allow bigint
@@ -9,6 +10,7 @@ anyType = "hello";
 anyType = true;
 anyType = null;
 
+// 2. unknown
 let unknownType: unknown;
 unknownType = 2;
 unknownType = 'hello';
