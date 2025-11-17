@@ -258,3 +258,33 @@ function functionForTheEnum(obj: { U: number }) {
 // Since all members are considered as type, and it contains U -> the enum can be passed
 // around a function
 functionForTheEnum(enumAtRuntime);
+
+//                            --    Enums at compile time    --
+
+// number-based enum by default
+enum LogLevel {
+  ERROR,
+  WARN,
+  INFO,
+  DEBUG,
+}
+
+
+// keyOf  doesn't work as expected
+//  "toString" | "toFixed" | "toExponential" | "toPrecision" | "valueOf" | "toLocaleString"
+type LogLevelStringsWithoutTypeOf = keyof LogLevel;
+/**
+ * This is equivalent to:
+ * type LogLevelStrings = 'ERROR' | 'WARN' | 'INFO' | 'DEBUG';
+ */
+type LogLevelStrings = keyof typeof LogLevel;
+
+function printImportant(key: LogLevelStrings, message: string) {
+  const num = LogLevel[key];    //  It's a number-based enum
+  if (num <= LogLevel.WARN) {
+    console.log("Log level key is:", key);
+    console.log("Log level value is:", num);
+    console.log("Log level message is:", message);
+  }
+}
+printImportant("ERROR", "This is a message");
