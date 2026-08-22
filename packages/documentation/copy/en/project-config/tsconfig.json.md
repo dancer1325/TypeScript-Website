@@ -21,7 +21,7 @@ translatable: true
       * JavaScript projects
     * == + JavaScript-related compiler flags / enabled by default
 
-## Using `tsconfig.json` or `jsconfig.json`
+## "tsconfig.json" OR "jsconfig.json"
 
 * if you invoke `tsc` / NO input files 
   * -> compiler searches for the `tsconfig.json` | 
@@ -83,7 +83,8 @@ Example `tsconfig.json` files:
 
 ## TSConfig Bases
 
-Depending on the JavaScript runtime environment which you intend to run your code in, there may be a base configuration which you can use at [github.com/tsconfig/bases](https://github.com/tsconfig/bases/).
+Depending on the JavaScript runtime environment which you intend to run your code in, there may be a base configuration
+which you can use at [github.com/tsconfig/bases](https://github.com/tsconfig/bases/).
 These are `tsconfig.json` files which your project extends from which simplifies your `tsconfig.json` by handling the runtime support.
 
 For example, if you were writing a project which uses Node.js version 12 and above, then you could use the npm module [`@tsconfig/node12`](https://www.npmjs.com/package/@tsconfig/node12):
@@ -101,7 +102,8 @@ For example, if you were writing a project which uses Node.js version 12 and abo
 }
 ```
 
-This lets your `tsconfig.json` focus on the unique choices for your project, and not all of the runtime mechanics. There are a few tsconfig bases already, and we're hoping the community can add more for different environments.
+This lets your `tsconfig.json` focus on the unique choices for your project, and not all of the runtime mechanics
+* There are a few tsconfig bases already, and we're hoping the community can add more for different environments.
 
 ## Details
 
@@ -111,7 +113,7 @@ This lets your `tsconfig.json` focus on the unique choices for your project, and
 
 ## TSConfig Reference
 
-* check [TSConfig Reference](/tsconfig)
+* check [TSConfig Reference](../../../../tsconfig-reference)
 
 ## Schema
 

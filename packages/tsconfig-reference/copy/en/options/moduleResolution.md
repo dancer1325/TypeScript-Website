@@ -3,11 +3,32 @@ display: "Module Resolution"
 oneline: "Specify how TypeScript looks up a file from a given module specifier."
 ---
 
-Specify the module resolution strategy:
+* == module resolution strategy
+  * ALLOWED values
+    * `'node16'` OR `'nodenext'`
+      * use cases   
+        *  modern versions of Node.js
+      * | Node.js v12+
+        * support ECMAScript imports & CommonJS `require`
+          * -> resolve -- via -- DIFFERENT algorithms
+      * \+ [`module`](module.md) values,
+        * picks the right algorithm / EACH resolution -- based on -- whether Node.js, | output JS code, see an 
+          * `import` OR
+          * `require` 
+    * `'node10'` OR `'node'`
+      * use cases
+        * Node.js v10-
+      * ONLY support
+        * CommonJS `require`
+    * `'bundler'` 
+      * uses
+        * with bundlers
+      * vs Node.js resolution modes
+        * BOTH support package.json `"imports"` & `"exports"`
+        * `bundler` NEVER requires file extensions | relative paths | imports
+    * `'classic'`
+      * ❌NOT recommended❌
+      * use cases
+        * TypeScript v1.6-
 
-- `'node16'` or `'nodenext'` for modern versions of Node.js. Node.js v12 and later supports both ECMAScript imports and CommonJS `require`, which resolve using different algorithms. These `moduleResolution` values, when combined with the corresponding [`module`](#module) values, picks the right algorithm for each resolution based on whether Node.js will see an `import` or `require` in the output JavaScript code.
-- `'node10'` (previously called `'node'`) for Node.js versions older than v10, which only support CommonJS `require`. You probably won't need to use `node10` in modern code.
-- `'bundler'` for use with bundlers. Like `node16` and `nodenext`, this mode supports package.json `"imports"` and `"exports"`, but unlike the Node.js resolution modes, `bundler` never requires file extensions on relative paths in imports.
-- `'classic'` was used in TypeScript before the release of 1.6. `classic` should not be used.
-
-* see [Module Resolution](/packages/documentation/copy/en/reference/Module%20Resolution.md)
+* [MORE](../../../../documentation/copy/en/reference/Module%20Resolution.md)

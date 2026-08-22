@@ -28,5 +28,9 @@
     "ts-node": "*",
     "typescript": "*"
   },
-  "type": "module"
+  "type": "module",
+  "description": "* This \"package\" == multi-lingual docs for the TSConfig   * == pulling data from `require(\"typescript\")` + markdown | [`./copy`](./copy) folder * TODO: Roughly:",
+  "main": "index.js",
+  "keywords": [],
+  "author": ""
 }

@@ -14,31 +14,33 @@ disable_toc: true
     * -> default `tsconfig.json` files are ignored
 
 * _Example:_
-```sh
-# Run a compile / look for a "tsconfig.json"
-tsc
-
-# Emit JS for ONLY "index.ts" -- via -- default settings
-tsc index.ts
-
-# Emit JS for ANY .ts files | src/   -- via -- default settings
-tsc src/*.ts
-
-# Emit files -- via -- compiler settings     tsconfig.production.json
-tsc --project tsconfig.production.json
-
-// TODO:
-# Emit "*.d.ts" file / .js file 
-# tsc index.js --declaration --emitDeclarationOnly        #     error TS6504
-tsc ./examples/index.js --declaration --emitDeclarationOnly --allowJs
-
-# Emit 1! .js file -- from -- 2 .ts files, -- via -- compiler options / take string arguments
-tsc app.ts util.ts --target esnext --outfile toone.js
-```
+  ```sh
+  # Run a compile / look for a "tsconfig.json"
+  tsc
+  
+  # Emit JS for ONLY "index.ts" -- via -- default settings
+  tsc index.ts
+  
+  # Emit JS for ANY .ts files | src/   -- via -- default settings
+  tsc src/*.ts
+  
+  # Emit files -- via -- compiler settings     tsconfig.production.json
+  tsc --project tsconfig.production.json
+  
+  // TODO:
+  # Emit "*.d.ts" file / .js file 
+  # tsc index.js --declaration --emitDeclarationOnly        #     error TS6504
+  tsc ./examples/index.js --declaration --emitDeclarationOnly --allowJs
+  
+  # Emit 1! .js file -- from -- 2 .ts files, -- via -- compiler options / take string arguments
+  tsc app.ts util.ts --target esnext --outfile toone.js
+  ```
 
 ## Compiler Options
 
-**If you're looking for more information about the compiler options in a tsconfig, check out the [TSConfig Reference](/tsconfig)**
+* ⚠️generated -- from -- source code⚠️
+* 👀see [here](https://github.com/dancer1325/TypeScript/blob/main/tsc/internal/tsoptions/declscompiler.go)'s `CommandLineOption`👀
+
 
 <!-- Start of replacement  --><h3 xmlns="http://www.w3.org/1999/html">CLI Commands</h3>
 <table class="cli-option" width="100%">
@@ -1462,9 +1464,3 @@ tsc app.ts util.ts --target esnext --outfile toone.js
 
 </tbody></table>
 <!-- End of replacement  -->
-
-## Related
-
-- check every option | [TSConfig Reference](/tsconfig)
-- how to use a [`tsconfig.json`](/docs/handbook/tsconfig-json.html) files
-- how to work in an [MSBuild project](/docs/handbook/compiler-options-in-msbuild.html)

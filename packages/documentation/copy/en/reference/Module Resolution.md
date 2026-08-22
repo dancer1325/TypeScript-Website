@@ -7,7 +7,7 @@ translatable: true
 ---
 
 * requirements
-  * see [Modules](../handbook-v2/Modules.md)
+  * [Modules](../handbook-v2/Modules.md)
 
 * _Module resolution_
   * := compiler's process 👀-- to figure out -- what an import refers to 👀
