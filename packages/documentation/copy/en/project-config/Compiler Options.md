@@ -6,16 +6,15 @@ oneline: A very high-level overview of the CLI compiler options for tsc
 disable_toc: true
 ---
 
-## Using the CLI
+## how does `tsc` work?
 
-* `tsc` compiles
-  * 👁️by default, closest project / -- defined by a -- `tsconfig.json` or
-  * set of TypeScript files -- via -- passing a glob of files
-    * -> default `tsconfig.json` files are ignored
+* `tsc`
+  * compile the CURRENT project -- filtered in by --- 's "tsconfig.json"
+  
 
 * _Example:_
   ```sh
-  # Run a compile / look for a "tsconfig.json"
+  # compile the CURRENT project -- filtered in by --- a "tsconfig.json"
   tsc
   
   # Emit JS for ONLY "index.ts" -- via -- default settings

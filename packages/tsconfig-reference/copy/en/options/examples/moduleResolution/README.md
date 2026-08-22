@@ -15,10 +15,12 @@ TODO:
 #### ONLY support
 TODO:
 ### `'bundler'`
-TODO:
-#### uses
+#### uses: with bundlers
 TODO:
 #### vs Node.js resolution modes
+##### BOTH support package.json `"imports"` & `"exports"`
+TODO:
+##### `bundler` NEVER requires file extensions | relative paths | imports
 TODO:
 ### `'classic'`
 TODO:
